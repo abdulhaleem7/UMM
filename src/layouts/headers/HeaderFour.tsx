@@ -5,7 +5,6 @@ import Image from "next/image"
 import UseSticky from "@/hooks/UseSticky"
 import { useState } from "react"
 import OffCanvas from "./menu/OffCanvas"
-import HeaderSearch from "./menu/HeaderSearch"
 import MobileSidebar from "./menu/MobileSidebar"
 
 import logo from "@/assets/img/logo/logo02.svg"

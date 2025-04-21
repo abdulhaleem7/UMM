@@ -17,9 +17,9 @@ const ProjectArea = () => {
                   <span>{item.tag}</span>
                   <h3 className="title"><Link href="/project-details">{item.title}</Link></h3>
                 </div>
-                <div className="project__icon">
+                {/* <div className="project__icon">
                   <Link href="/project-details"><i className="flaticon-diagonal-arrow"></i></Link>
-                </div>
+                </div> */}
               </div>
             </div>
           ))}

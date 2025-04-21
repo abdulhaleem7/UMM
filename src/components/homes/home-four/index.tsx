@@ -10,7 +10,6 @@ import Counter from "./Counter"
 import Project from "./Project"
 import WorkArea from "../home-two/WorkArea"
 import CTA from "../home-two/CTA"
-import Blog from "./Blog"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import Testimonial from "./Testimonial"
 
