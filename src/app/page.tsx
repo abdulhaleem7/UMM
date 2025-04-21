@@ -1,13 +1,13 @@
 import Wrapper from "@/layouts/Wrapper";
-import HomeOne from "../components/homes/home-one/HomeOne";
+import HomeFour from "@/components/homes/home-four/index";
 
 export const metadata = {
-  title: "Logistex - Transport & Logistics React Next js Template",
+  title: "Unified - Transport & Logistics React Next js Template",
 };
 const page = () => {
   return (
     <Wrapper>
-      <HomeOne />
+      <HomeFour />
     </Wrapper>
   )
 }

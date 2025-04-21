@@ -18,7 +18,7 @@ const hero_data: DataType[] = [
       img: "/assets/img/slider/h4_slider_bg01.jpg",
       sub_title: "Fastest & Secure Logistics",
       title: "Unified in Motion, Delivering with Precision",
-      desc: (<>Whether it's large-scale freight or last-mile drop-offs, Unified Moving Master ensures dependable service, professional handling, and cohesive logistics throughout the journey.</>),
+      desc: (<>Whether it is large-scale freight or last-mile drop-offs, Unified Moving Master ensures dependable service, professional handling, and cohesive logistics throughout the journey.</>),
    },
    {
       id: 2,

@@ -3,8 +3,6 @@ import Count from "@/components/common/Count"
 
 import about_img from "@/assets/img/images/h4_about_img.jpg"
 import about_shape from "@/assets/img/images/choose_logo.svg"
-import author from "@/assets/img/images/about_author.png"
-import signature from "@/assets/img/images/signature02.png"
 import shape from "@/assets/img/images/h4_about_shape.svg"
 
 const About = () => {

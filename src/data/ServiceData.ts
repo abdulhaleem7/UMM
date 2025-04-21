@@ -3,7 +3,6 @@ import { StaticImageData } from "next/image";
 import service_1 from "@/assets/img/services/services_img01.jpg"
 import service_2 from "@/assets/img/services/services_img02.jpg"
 import service_3 from "@/assets/img/services/services_img03.jpg"
-import service_4 from "@/assets/img/services/services_img04.jpg"
 import service_5 from "@/assets/img/services/services_img07.jpg"
 import service_6 from "@/assets/img/services/services_img08.jpg"
 import service_7 from "@/assets/img/services/services_img09.jpg"

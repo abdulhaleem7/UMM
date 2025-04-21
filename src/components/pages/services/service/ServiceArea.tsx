@@ -1,4 +1,3 @@
-import InjectableSvg from "@/components/common/InjectableSvg"
 import service_data from "@/data/ServiceData"
 import Image from "next/image"
 import Link from "next/link"

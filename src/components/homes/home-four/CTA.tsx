@@ -1,7 +1,5 @@
 import Image from "next/image"
 import cta_img from "@/assets/img/images/cta_img.jpg"
-import InjectableSvg from "@/components/common/InjectableSvg"
-import Link from "next/link"
 
 const CTA = () => {
    return (
