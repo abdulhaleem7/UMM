@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import request_shape from "@/assets/img/images/request_shape.svg"
 
-const tab_title: string[] = ["Request a Quote", "Track & Trace"];
+const tab_title: string[] = ["Request a Quote"];
 
 interface PropsType {
    style?: boolean;
@@ -137,7 +137,7 @@ const RequestArea = ({ style }: PropsType) => {
                                  <button type="submit" className="btn">Request a Quote</button>
                               </form>
                            </div>
-                           <div className={`tab-pane fade ${activeTab === 1 ? 'show active' : ''}`} id="track-tab-pane">
+                           {/* <div className={`tab-pane fade ${activeTab === 1 ? 'show active' : ''}`} id="track-tab-pane">
                               <form onSubmit={(e) => e.preventDefault()} className="request__form">
                                  <span className="title">Shipment Type</span>
                                  <div className="form-grp select-grp">
@@ -179,7 +179,7 @@ const RequestArea = ({ style }: PropsType) => {
                                  </div>
                                  <button type="submit" className="btn">Track & Trace</button>
                               </form>
-                           </div>
+                           </div> */}
                         </div>
                      </div>
                   </div>

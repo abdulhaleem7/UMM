@@ -20,7 +20,7 @@ const VideoArea = () => {
                <div className="row align-items-center">
                   <div className="col-xl-7 col-lg-6 order-0 order-lg-2">
                      <div className="video__play-btn video__play-btn-two">
-                        <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="play-btn popup-video"><i className="fas fa-play"></i></a>
+                        {/* <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="play-btn popup-video"><i className="fas fa-play"></i></a> */}
                      </div>
                   </div>
                   <div className="col-xl-5 col-lg-6">

@@ -32,7 +32,7 @@ const Service = () => {
                            <Link href="/services-details">
                               <Image src={item.img ? item.img : ""} alt="img" />
                            </Link>
-                           <Link href="/services-details" className="btn border-btn">Read More <InjectableSvg src="/assets/img/icon/right_arrow.svg" alt="" className="injectable" /></Link>
+                           {/* <Link href="/services-details" className="btn border-btn">Read More <InjectableSvg src="/assets/img/icon/right_arrow.svg" alt="" className="injectable" /></Link> */}
                         </div>
                         <div className="services__content-three">
                            <div className="services__icon-three">
