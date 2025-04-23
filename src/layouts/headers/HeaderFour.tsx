@@ -26,7 +26,8 @@ const HeaderFour = () => {
                   <div className="col-12">
                      <div className="tgmenu__wrap">
                         <div className="logo">
-                           <Link href="/"><Image src={logo} alt="Logo" /></Link>
+                        {/* <Image src={logo} alt="Logo" /> */}
+                           <Link href="/"><h3>UnifiedMoving</h3></Link>
                         </div>
                         <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                            <NavMenu />

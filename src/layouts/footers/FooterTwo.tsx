@@ -16,7 +16,7 @@ const FooterTwo = ({ style }: propsType) => {
                   <div className="col-xl-4 col-lg-5 col-md-6">
                      <div className="footer__widget">
                         <div className="footer__logo">
-                           <Link href="/"><Image src={logo} alt="logo" /></Link>
+                           <Link href="/"><h3>UnifiedMoving</h3></Link>
                         </div>
                         <div className="footer__content footer__content-two">
                            <p>Ontario’s Trusted Logistics Experts — Unified in Motion, Delivering with Precision</p>

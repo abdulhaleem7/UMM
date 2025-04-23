@@ -22,7 +22,7 @@ const About = () => {
             <Feature />
             <VideoArea />
             <Counter />
-            <Pricing />
+            {/* <Pricing /> */}
             <Team style={false} />
             <Testimonial style={true} />
             <Brand />
