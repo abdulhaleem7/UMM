@@ -1,13 +1,13 @@
 "use client"
 import Link from "next/link"
 import NavMenu from "./menu/NavMenu"
-import Image from "next/image"
+// import Image from "next/image"
 import UseSticky from "@/hooks/UseSticky"
 import { useState } from "react"
 import OffCanvas from "./menu/OffCanvas"
 import MobileSidebar from "./menu/MobileSidebar"
 
-import logo from "@/assets/img/logo/logo02.svg"
+// import logo from "@/assets/img/logo/logo02.svg"
 import HeaderTopFour from "./HeaderTopFour"
 
 const HeaderFour = () => {

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import logo from "@/assets/img/logo/w_logo.svg"
+// import logo from "@/assets/img/logo/w_logo.svg"
 import shape_1 from "@/assets/img/images/inner_footer_shape01.svg"
 import shape_2 from "@/assets/img/images/inner_footer_shape02.svg"
 interface propsType {
@@ -16,7 +16,7 @@ const FooterTwo = ({ style }: propsType) => {
                   <div className="col-xl-4 col-lg-5 col-md-6">
                      <div className="footer__widget">
                         <div className="footer__logo">
-                           <Link href="/"><h3>UnifiedMoving</h3></Link>
+                           <Link href="/"><h3 className="text-white">UnifiedMoving</h3></Link>
                         </div>
                         <div className="footer__content footer__content-two">
                            <p>Ontario’s Trusted Logistics Experts — Unified in Motion, Delivering with Precision</p>
@@ -40,11 +40,11 @@ const FooterTwo = ({ style }: propsType) => {
                         <h4 className="footer__widget-title footer__widget-title-two">Our Services</h4>
                         <div className="footer__link footer__link-two">
                            <ul className="list-wrap">
-                              <li><Link href="/services-details">Moving and Hauling</Link></li>
-                              <li><Link href="/services-details">Courier & Local Delivery</Link></li>
-                              <li><Link href="/services-details">Freight Transport</Link></li>
-                              <li><Link href="/services-details">E-commerce Fulfillment & Delivery</Link></li>
-                              <li><Link href="/services-details">Custom Logistics</Link></li>
+                              <li><Link href="/">Moving and Hauling</Link></li>
+                              <li><Link href="/">Courier & Local Delivery</Link></li>
+                              <li><Link href="/">Freight Transport</Link></li>
+                              <li><Link href="/">E-commerce Fulfillment & Delivery</Link></li>
+                              <li><Link href="/">Custom Logistics</Link></li>
                            </ul>
                         </div>
                      </div>
@@ -54,11 +54,11 @@ const FooterTwo = ({ style }: propsType) => {
                         <h4 className="footer__widget-title footer__widget-title-two">Quick Links</h4>
                         <div className="footer__link footer__link-two">
                            <ul className="list-wrap">
-                              <li><Link href="/how-it-work">How it’s Work</Link></li>
-                              <li><Link href="/client">Partners</Link></li>
-                              <li><Link href="/testimonial">Testimonials</Link></li>
-                              <li><Link href="/project">Case Studies</Link></li>
-                              <li><Link href="/pricing">Pricing</Link></li>
+                              <li><Link href="/">How it’s Work</Link></li>
+                              <li><Link href="/">Partners</Link></li>
+                              <li><Link href="/">Testimonials</Link></li>
+                              <li><Link href="/">Case Studies</Link></li>
+                              <li><Link href="/">Pricing</Link></li>
                            </ul>
                         </div>
                      </div>
