@@ -26,17 +26,20 @@ const HeaderFour = () => {
                   <div className="col-12">
                      <div className="tgmenu__wrap">
                         <div className="logo">
-                        {/* <Image src={logo} alt="Logo" /> */}
+                           {/* <Image src={logo} alt="Logo" /> */}
                            <Link href="/"><h3>UnifiedMoving</h3></Link>
                         </div>
                         <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                            <NavMenu />
                         </div>
-                        <div className="tgmenu__navbar-wrap tgmenu__main-menu mt-15 mb-15">
-                           <Link href="/#video__area" className="btn">Contact Us</Link>
-                        </div>
+
                         <div className="tgmenu__action tgmenu__action-two d-none d-md-flex">
                            <ul className="list-wrap">
+                              <li>
+                                 <div className="tgmenu__navbar-wrap tgmenu__main-menu mt-15 mb-15">
+                                    <Link href="/#video__area" className="btn" style={{"color": "white"}}>Request a quote</Link>
+                                 </div>
+                              </li>
                               <li>
                                  <div className="offcanvas-toggle offcanvas-toggle-two">
                                     <a onClick={() => setOffCanvas(true)} style={{ cursor: "pointer" }} className="menu-tigger">
