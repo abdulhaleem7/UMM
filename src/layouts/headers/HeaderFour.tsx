@@ -9,6 +9,7 @@ import MobileSidebar from "./menu/MobileSidebar"
 
 // import logo from "@/assets/img/logo/logo02.svg"
 import HeaderTopFour from "./HeaderTopFour"
+import InjectableSvg from "@/components/common/InjectableSvg"
 
 const HeaderFour = () => {
 
@@ -31,6 +32,9 @@ const HeaderFour = () => {
                         </div>
                         <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                            <NavMenu />
+                        </div>
+                        <div className="tgmenu__navbar-wrap tgmenu__main-menu mt-15 mb-15">
+                           <Link href="/#video__area" className="btn">Contact Us</Link>
                         </div>
                         <div className="tgmenu__action tgmenu__action-two d-none d-md-flex">
                            <ul className="list-wrap">

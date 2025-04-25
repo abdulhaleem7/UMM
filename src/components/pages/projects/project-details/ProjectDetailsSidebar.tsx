@@ -31,7 +31,7 @@ const ProjectDetailsSidebar = () => {
             </div>
             <div className="services__widget services__widget-two">
                <div className="sidebar__logo">
-                  <Link href="/"><Image src={logo} alt="logo" /></Link>
+                  <Link href="/"><h3>UnifiedMoving</h3></Link>
                </div>
                <div className="sidebar__contact">
                   <h2 className="title">Logistics & Cargo <br /> for Business</h2>

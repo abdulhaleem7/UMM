@@ -11,13 +11,13 @@ const VideoArea = ({ style }: VideoAreaProps) => {
 
    return (
       <>
-         <section className="video__area">
+         <section id="video__area" className="video__area">
             <div className="video__bg" style={{ backgroundImage: `url(/assets/img/bg/video_bg.jpg)` }}></div>
             <div className="container">
                <div className="row align-items-center">
                   <div className="col-xl-7 col-lg-6 order-0 order-lg-2">
                      <div className={`video__play-btn ${style ? "video__play-btn-three" : ""}`}>
-                        <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="play-btn popup-video"><i className="fas fa-play"></i></a>
+                        {/* <a onClick={() => setIsVideoOpen(true)} style={{ cursor: "pointer" }} className="play-btn popup-video"><i className="fas fa-play"></i></a> */}
                      </div>
                   </div>
                   <div className="col-xl-5 col-lg-6">
