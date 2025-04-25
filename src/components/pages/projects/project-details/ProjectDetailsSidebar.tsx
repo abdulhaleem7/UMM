@@ -1,8 +1,8 @@
-import Image from "next/image"
+// import Image from "next/image"
 import Link from "next/link"
 import InjectableSvg from "@/components/common/InjectableSvg"
 
-import logo from "@/assets/img/logo/logo02.svg"
+// import logo from "@/assets/img/logo/logo02.svg"
 
 const ProjectDetailsSidebar = () => {
    return (

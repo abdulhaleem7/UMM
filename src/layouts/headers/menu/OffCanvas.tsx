@@ -1,7 +1,7 @@
-import Image from "next/image"
+// import Image from "next/image"
 import Link from "next/link"
 
-import logo from "@/assets/img/logo/logo.svg"
+// import logo from "@/assets/img/logo/logo.svg"
 
 interface MobileSidebarProps {
    offCanvas: boolean;

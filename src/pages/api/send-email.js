@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         let mailOptions = {
             from: "admin@unifiedmovingmaster.ca",
             to: [
-                "admin@unifiedmovingmaster.ca",
+                "admin@unifiedmovingmaster.ca", senderEmail
               ],
             subject: subject,
             html: emailBdy

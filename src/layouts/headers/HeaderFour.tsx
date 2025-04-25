@@ -9,7 +9,6 @@ import MobileSidebar from "./menu/MobileSidebar"
 
 // import logo from "@/assets/img/logo/logo02.svg"
 import HeaderTopFour from "./HeaderTopFour"
-import InjectableSvg from "@/components/common/InjectableSvg"
 
 const HeaderFour = () => {
 
