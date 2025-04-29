@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import about_img from "@/assets/img/images/h4_about_img2.jpg"
 import about_shape from "@/assets/img/images/choose_logo.svg"
-import shape from "@/assets/img/images/h4_about_shape.svg"
 import Count from '../common/Count'
 
 const AboutArea = () => {

@@ -116,31 +116,31 @@ const RequestArea = ({ style }: PropsType) => {
    const getRequestQuoteEmailBody = () => {
      return `
        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-         <h2 style="color: #4169E1; text-align: center;">New Moving Quote Request</h2>
+         <h2 style="color: #d70006; text-align: center;">New Moving Quote Request</h2>
          <p style="font-size: 16px; color: #555;">Hello, you have received a new quote request from your website.</p>
          
          <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-           <h3 style="color: #4169E1; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Contact Information</h3>
-           <p><strong style="color: #4169E1;">Full Name:</strong> ${requestData.fullName}</p>
-           <p><strong style="color: #4169E1;">Email Address:</strong> ${requestData.email}</p>
-           <p><strong style="color: #4169E1;">Phone Number:</strong> ${requestData.phone}</p>
+           <h3 style="color: #d70006; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Contact Information</h3>
+           <p><strong style="color: #d70006;">Full Name:</strong> ${requestData.fullName}</p>
+           <p><strong style="color: #d70006;">Email Address:</strong> ${requestData.email}</p>
+           <p><strong style="color: #d70006;">Phone Number:</strong> ${requestData.phone}</p>
          </div>
          
          <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-           <h3 style="color: #4169E1; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Move Details</h3>
-           <p><strong style="color: #4169E1;">Moving Date:</strong> ${requestData.moveDate}</p>
-           <p><strong style="color: #4169E1;">Current Address:</strong> ${requestData.currentAddress}</p>
-           <p><strong style="color: #4169E1;">New Address:</strong> ${requestData.newAddress}</p>
+           <h3 style="color: #d70006; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Move Details</h3>
+           <p><strong style="color: #d70006;">Moving Date:</strong> ${requestData.moveDate}</p>
+           <p><strong style="color: #d70006;">Current Address:</strong> ${requestData.currentAddress}</p>
+           <p><strong style="color: #d70006;">New Address:</strong> ${requestData.newAddress}</p>
            
-           <p><strong style="color: #4169E1;">Move Type:</strong> ${getMoveTypes()}</p>
-           <p><strong style="color: #4169E1;">Services Needed:</strong> ${getServicesNeeded()}</p>
+           <p><strong style="color: #d70006;">Move Type:</strong> ${getMoveTypes()}</p>
+           <p><strong style="color: #d70006;">Services Needed:</strong> ${getServicesNeeded()}</p>
          </div>
          
          <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-           <h3 style="color: #4169E1; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Additional Details</h3>
-           <p><strong style="color: #4169E1;">Special Requests:</strong></p>
+           <h3 style="color: #d70006; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Additional Details</h3>
+           <p><strong style="color: #d70006;">Special Requests:</strong></p>
            <p style="background-color: #fff; padding: 10px; border-radius: 3px;">${requestData.specialRequests}</p>
-           <p><strong style="color: #4169E1;">Preferred Contact Method:</strong> ${getContactMethods()}</p>
+           <p><strong style="color: #d70006;">Preferred Contact Method:</strong> ${getContactMethods()}</p>
          </div>
          
          <p style="font-size: 12px; color: #777; text-align: center; margin-top: 20px;">This is an automated email sent from your Borderless Movers quote request form.</p>
@@ -290,6 +290,43 @@ const RequestArea = ({ style }: PropsType) => {
      }
    };
 
+
+   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      let input = e.target.value;
+    
+      // Always ensure it starts with +1
+      if (!input.startsWith("+1")) {
+        input = "+1" + input.replace(/[^0-9]/g, "");
+      } else {
+        // Remove all non-numeric characters except "+"
+        input = "+1" + input.slice(2).replace(/[^0-9]/g, "");
+      }
+    
+      // Format it: +1 (XXX) XXX-XXXX
+      if (input.length > 2) {
+        const numbers = input.slice(2); // get digits after +1
+        let formatted = "+1 ";
+    
+        if (numbers.length > 0) {
+          formatted += "(" + numbers.slice(0, 3);
+        }
+        if (numbers.length >= 3) {
+          formatted += ") " + numbers.slice(3, 6);
+        }
+        if (numbers.length >= 6) {
+          formatted += "-" + numbers.slice(6, 10);
+        }
+    
+        input = formatted;
+      }
+    
+      setRequestData((prev) => ({
+        ...prev,
+        phone: input,
+      }));
+    };
+    
+
    return (
       <section className="about__area-two section-py-120">
          <div className="container">
@@ -307,7 +344,7 @@ const RequestArea = ({ style }: PropsType) => {
                      </div> */}
                      <div className="request__tab-wrap">
                         <div className="tab-content" id="myTabContent">
-                           <div className={`tab-pane fade ${activeTab === 0 ? 'show active' : ''}`} id="request-tab-pane">
+                           <div className={`tab-pane fade show active`} id="request-tab-pane">
                               <form onSubmit={handleSubmit} className="request__form">
                                  <span className="title">Contact Information</span>
                                  <div className="row gutter-20">
@@ -336,20 +373,22 @@ const RequestArea = ({ style }: PropsType) => {
                                        </div>
                                     </div>
                                     <div className="col-lg-6">
-                                       <div className="form-grp">
-                                          <label htmlFor="phone">Phone Number <span className="text-danger">*</span></label>
-                                          <div className="input-group">
-                                             {/* <span className="input-group-text">+1</span> */}
-                                             <input 
-                                               type="tel" 
-                                               id="phone" 
-                                               placeholder="Your Phone Number" 
-                                               value={requestData.phone}
-                                               onChange={handleInputChange}
-                                             />
-                                          </div>
-                                       </div>
-                                    </div>
+  <div className="form-grp">
+    <label htmlFor="phone">
+      Phone Number <span className="text-danger">*</span>
+    </label>
+    <div className="input-group">
+      <input
+        type="tel"
+        id="phone"
+        placeholder="+1 (555) 555-5555"
+        value={requestData.phone}
+        onChange={handlePhoneChange}
+      />
+    </div>
+  </div>
+</div>
+
                                  </div>
 
                                  <span className="title mt-4">Move Details</span>

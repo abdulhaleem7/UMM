@@ -8,8 +8,6 @@ import VideoArea from "./VideoArea"
 import HeaderFour from "@/layouts/headers/HeaderFour"
 import ScrollToTop from "../common/ScrollToTop"
 import Feature from "../homes/home-four/Feature"
-import Brand from "../homes/home-four/Brand"
-import Team from "./Team"
 
 const About = () => {
    return (
