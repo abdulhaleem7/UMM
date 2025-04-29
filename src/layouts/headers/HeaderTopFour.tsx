@@ -9,7 +9,7 @@ const HeaderTopFour = () => {
                <div className="col-xl-7">
                   <ul className="tg-header__top-info tg-header__top-info-two left-side list-wrap">
                      <li><i className="flaticon-location-1"></i>Hamilton Ontario</li>
-                     <li><i className="flaticon-envelope"></i><a href="mailto:info@unifiedmastermovers.com">info@unifiedmastermovers.com</a></li>
+                     <li><i className="flaticon-envelope"></i><a href="mailto:admin@unifiedmovingmaster.ca">admin@unifiedmovingmaster.ca</a></li>
                      <li><i className="flaticon-time"></i>Mon – Sun: 9.00 am – 8.00pm</li>
                   </ul>
                </div>

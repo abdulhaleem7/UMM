@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Count from "@/components/common/Count"
 
-import about_img from "@/assets/img/images/h4_about_img.jpg"
+import about_img from "@/assets/img/images/h4_about_img2.jpg"
 import about_shape from "@/assets/img/images/choose_logo.svg"
 import shape from "@/assets/img/images/h4_about_shape.svg"
 
@@ -52,6 +52,7 @@ const About = () => {
                               <li><i className="flaticon-check"></i>100% Satisfaction Guarantee</li>
                               <li><i className="flaticon-check"></i>Professional and Qualified</li>
                               <li><i className="flaticon-check"></i>Safe, Reliable And Express</li>
+                              <li><i className="flaticon-check"></i>Honesty, Integrity and Transparency</li>
                            </ul>
                         </div>
                         <div className="about__list-wrap-two">
@@ -83,7 +84,7 @@ const About = () => {
                            </div>
                            <div className="content">
                               <span>Email Address</span>
-                              <a href="mailto:info@unifiedmastermovers.com">info@unifiedmastermovers.com</a>
+                              <a href="mailto:admin@unifiedmovingmaster.ca">admin@unifiedmovingmaster.ca</a>
                            </div>
                         </div>
                         <div className="about__contact">

@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 
 import request_shape from "@/assets/img/images/request_shape.svg"
 
-const tab_title: string[] = ["Request a Quote"];
 
 interface PropsType {
    style?: boolean;
@@ -37,7 +36,6 @@ interface RequestData {
 }
 
 const RequestArea = ({ style }: PropsType) => {
-   const [activeTab, setActiveTab] = useState(0);
    const [loading, setLoading] = useState(false);
    const [requestData, setRequestData] = useState<RequestData>({
      fullName: "",
@@ -64,9 +62,6 @@ const RequestArea = ({ style }: PropsType) => {
      contactText: false,
    });
 
-   const handleTabClick = (index: number) => {
-      setActiveTab(index);
-   };
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
      const { id, value } = e.target;
@@ -296,12 +291,12 @@ const RequestArea = ({ style }: PropsType) => {
    };
 
    return (
-      <section id="request-qoute" className={style ? "request__area-two" : "request__area"}>
+      <section className="about__area-two section-py-120">
          <div className="container">
             <div className="row">
                <div className="col-lg-12">
                   <div className="request__wrap">
-                     <div className="request__nav">
+                     {/* <div className="request__nav">
                         <ul className={`nav nav-tabs ${style ? "request__nav-two" : ""}`} id="myTab">
                            {tab_title.map((tab, index) => (
                               <li key={index} onClick={() => handleTabClick(index)} className="nav-item" role="presentation">
@@ -309,7 +304,7 @@ const RequestArea = ({ style }: PropsType) => {
                               </li>
                            ))}
                         </ul>
-                     </div>
+                     </div> */}
                      <div className="request__tab-wrap">
                         <div className="tab-content" id="myTabContent">
                            <div className={`tab-pane fade ${activeTab === 0 ? 'show active' : ''}`} id="request-tab-pane">

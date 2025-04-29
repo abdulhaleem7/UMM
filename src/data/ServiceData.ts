@@ -25,7 +25,7 @@ const service_data: DataType[] = [
       img: service_5,
       icon: "flaticon-truck", // Replaced with a more suitable icon for logistics
       title: "Custom Logistics",
-      desc: "Customized services for freight, specialty cargo, and complex delivery schedules to fit your unique needs.",
+      desc: "Tailored solutions for freight, specialty cargo, and complex delivery schedules — designed to meet your unique needs with precision and care.",
    },
    {
       id: 2,
@@ -33,7 +33,7 @@ const service_data: DataType[] = [
       img: service_6,
       icon: "flaticon-box", // Replaced with a box icon suitable for e-commerce fulfillment
       title: "E-commerce Fulfillment & Delivery",
-      desc: "We help online stores with pickups, quick delivery, and trusted fulfillment across Ontario.",
+      desc: "Reliable pickups, fast deliveries, and trusted fulfillment services to power online stores across Ontario.",
    },
    {
       id: 3,
@@ -41,7 +41,7 @@ const service_data: DataType[] = [
       img: service_7,
       icon: "flaticon-delivery", // Replaced with an icon representing freight transport
       title: "Freight Transport",
-      desc: "Need to move pallets or larger shipments? We’ve got you covered within Ontario and surrounding areas.",
+      desc: "Moving pallets or large shipments? We deliver dependable freight solutions across Ontario and surrounding regions.",
    },
 
    // inner_page
@@ -51,23 +51,23 @@ const service_data: DataType[] = [
       img: service_1,
       icon: "flaticon-delivery", // Replaced with an icon suitable for courier and local delivery
       title: "Courier & Local Delivery",
-      desc: "Fast, reliable, and secure delivery services for packages within your city or local area, ensuring timely arrivals and excellent customer service.",
+      desc: "Fast, reliable, and secure delivery services for packages within your city, ensuring on-time arrivals and top-notch customer service.",
    },
    {
       id: 5,
       page: "inner_page",
       img: service_2,
-      icon: "flaticon-pin", // Replaced with an icon suitable for moving and hauling
+      icon: "flaticon-truck", // Replaced with an icon suitable for moving and hauling
       title: "Moving and Hauling",
-      desc: "Efficient and reliable moving and hauling services for your heavy-duty transport and relocation needs.",
+      desc: "Efficient, reliable moving and hauling services for all your heavy-duty transport and relocation requirements.",
    },
    {
       id: 6,
       page: "inner_page",
       img: service_3,
-      icon: "flaticon-plane", // Replaced with an airplane icon for air freight
+      icon: "flaticon-box", // Replaced with an airplane icon for air freight
       title: "Air Freight",
-      desc: "Fast, coordinated air freight services to transport goods between countries efficiently.",
+      desc: "Swift and coordinated air freight services for efficient international transport of goods.",
    },
 ];
 

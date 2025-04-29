@@ -2,7 +2,7 @@ import Project from "@/components/pages/projects/project";
 import Wrapper from "@/layouts/Wrapper";
 
 export const metadata = {
-   title: "Project Logistex - Transport & Logistics React Next js Template",
+   title: "Project umm - Transport & Logistics React Next js Template",
 };
 const page = () => {
    return (

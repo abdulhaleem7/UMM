@@ -27,7 +27,7 @@ const FooterTwo = ({ style }: propsType) => {
                               <li><Link href="https://twitter.com" target="_blank"><i className="fab fa-twitter"></i></Link></li>
                               <li><Link href="https://www.whatsapp.com/" target="_blank"><i className="fab fa-whatsapp"></i></Link></li>
                               <li><Link href="https://www.instagram.com/" target="_blank"><i className="fab fa-instagram"></i></Link></li>
-                              <li><Link href="https://www.youtube.com/" target="_blank"><i className="fab fa-youtube"></i></Link></li>
+                              {/* <li><Link href="https://www.youtube.com/" target="_blank"><i className="fab fa-youtube"></i></Link></li> */}
                            </ul>
                         </div>
                         <div className="copyright-text copyright-text-two">
@@ -78,7 +78,7 @@ const FooterTwo = ({ style }: propsType) => {
                               </li>
                               <li>
                                  <i className="flaticon-time"></i>
-                                 <p>Mon – Sat: 8 am – 5 pm, <br /> Sunday: <span>CLOSED</span></p>
+                                 <p>Mon – Sat: 8 am – 6 pm, <br /> Sunday: <span>CLOSED</span></p>
                               </li>
                            </ul>
                         </div>

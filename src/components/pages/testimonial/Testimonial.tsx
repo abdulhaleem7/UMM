@@ -25,25 +25,25 @@ const testi_data: DataType[] = [
    {
       id: 1,
       title: "Ralph Edwards",
-      designation: "CEO, logistex Agency",
+      designation: "CEO, umm Agency",
       desc: (<>“ Morem ipsum dolor sit amet, consectetur adipisc Service awing elita florai sum dolor sit amet, consectetur area recall edBorem ipsum dolor sit amet, consectetur.”</>),
    },
    {
       id: 2,
       title: "Jone Cooper",
-      designation: "CEO, logistex Agency",
+      designation: "CEO, umm Agency",
       desc: (<>“ Morem ipsum dolor sit amet, consectetur adipisc Service awing elita florai sum dolor sit amet, consectetur area recall edBorem ipsum dolor sit amet, consectetur.”</>),
    },
    {
       id: 3,
       title: "Eleanor Pena",
-      designation: "CEO, logistex Agency",
+      designation: "CEO, umm Agency",
       desc: (<>“ Morem ipsum dolor sit amet, consectetur adipisc Service awing elita florai sum dolor sit amet, consectetur area recall edBorem ipsum dolor sit amet, consectetur.”</>),
    },
    {
       id: 4,
       title: "Floyd Miles",
-      designation: "CEO, logistex Agency",
+      designation: "CEO, umm Agency",
       desc: (<>“ Morem ipsum dolor sit amet, consectetur adipisc Service awing elita florai sum dolor sit amet, consectetur area recall edBorem ipsum dolor sit amet, consectetur.”</>),
    },
 ];

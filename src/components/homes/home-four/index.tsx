@@ -4,14 +4,11 @@ import Feature from "./Feature"
 import About from "./About"
 import Service from "./Service"
 import Counter from "./Counter"
-import Project from "./Project"
 import FooterTwo from "@/layouts/footers/FooterTwo"
 import Testimonial from "./Testimonial"
-import Brand from "./Brand"
 import VideoArea from "./VideoArea"
 import RequestArea from "./RequestArea"
 import WorkArea from "./WorkArea"
-import CTA from "./CTA"
 
 const HomeFour = () => {
    return (
@@ -21,15 +18,15 @@ const HomeFour = () => {
             <Hero />
             <Feature />
             <About />
-            <Brand />
+            {/* <Brand /> */}
             <Service />
             <VideoArea style={true} />
             <RequestArea style={true} />
             <Testimonial />
             <Counter />
-            <Project />
+            {/* <Project /> */}
             <WorkArea />
-            <CTA />
+            {/* <CTA /> */}
             <div className="mb-20"></div>
             <FooterTwo />
          </main>

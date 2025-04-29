@@ -29,7 +29,7 @@ const OffCanvas = ({ offCanvas, setOffCanvas }: MobileSidebarProps) => {
                </div>
                <div className="contact-list mb-30">
                   <h4>Email Address</h4>
-                  <p>info@unifiedmastermovers.com</p>
+                  <p>admin@unifiedmovingmaster.ca</p>
                </div>
             </div>
             <div className="offCanvas__social-icon mt-30">

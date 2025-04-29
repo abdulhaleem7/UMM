@@ -8,7 +8,6 @@ import OffCanvas from "./menu/OffCanvas"
 import MobileSidebar from "./menu/MobileSidebar"
 
 // import logo from "@/assets/img/logo/logo02.svg"
-import HeaderTopFour from "./HeaderTopFour"
 
 const HeaderFour = () => {
 
@@ -19,7 +18,7 @@ const HeaderFour = () => {
    return (
       <header>
          <div id="header-fixed-height"></div>
-         <HeaderTopFour />
+         {/* <HeaderTopFour /> */}
          <div id="sticky-header" className={`tg-header__area tg-header__area-two ${sticky ? "tg-sticky-menu sticky-menu sticky-menu__show" : ""}`}>
             <div className="container-fluid p-0">
                <div className="row gx-0">
@@ -37,7 +36,7 @@ const HeaderFour = () => {
                            <ul className="list-wrap">
                               <li>
                                  <div className="tgmenu__navbar-wrap tgmenu__main-menu mt-15 mb-15">
-                                    <Link href="/#video__area" className="btn" style={{"color": "white"}}>Request a quote</Link>
+                                    <Link href="/request-a-quote" className="btn" style={{"color": "white"}}>Request a quote</Link>
                                  </div>
                               </li>
                               <li>
