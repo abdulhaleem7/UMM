@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import sevice_details1 from "@/assets/img/logo/logo02.svg"
+import logo from "@/assets/img/logo/umm-logo.png"
 import InjectableSvg from "@/components/common/InjectableSvg"
 
 const ServiceSidebar = () => {
@@ -46,7 +46,7 @@ const ServiceSidebar = () => {
             </div>
             <div className="services__widget services__widget-two">
                <div className="sidebar__logo">
-                  <Link href="/"><Image src={sevice_details1} alt="logo" /></Link>
+                  <Link href="/"><Image src={logo} alt="logo" width={100} /></Link>
                </div>
                <div className="sidebar__contact">
                   <h2 className="title">Logistics & Cargo <br /> for Business</h2>

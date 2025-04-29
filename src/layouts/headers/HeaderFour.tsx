@@ -7,7 +7,8 @@ import { useState } from "react"
 import OffCanvas from "./menu/OffCanvas"
 import MobileSidebar from "./menu/MobileSidebar"
 
-// import logo from "@/assets/img/logo/logo02.svg"
+import logo from "@/assets/img/logo/umm-logo.png"
+import Image from "next/image"
 
 const HeaderFour = () => {
 
@@ -25,8 +26,8 @@ const HeaderFour = () => {
                   <div className="col-12">
                      <div className="tgmenu__wrap">
                         <div className="logo">
-                           {/* <Image src={logo} alt="Logo" /> */}
-                           <Link href="/"><h3>UnifiedMoving</h3></Link>
+                           
+                           <Link href="/"><Image src={logo} alt="Logo" width={100} /></Link>
                         </div>
                         <div className="tgmenu__navbar-wrap tgmenu__main-menu d-none d-xl-flex">
                            <NavMenu />

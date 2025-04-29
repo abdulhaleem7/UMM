@@ -4,6 +4,8 @@ import Link from "next/link"
 // import logo from "@/assets/img/logo/w_logo.svg"
 import shape_1 from "@/assets/img/images/inner_footer_shape01.svg"
 import shape_2 from "@/assets/img/images/inner_footer_shape02.svg"
+import logo from "@/assets/img/logo/umm-logo.png"
+
 interface propsType {
    style?: boolean;
 }
@@ -16,7 +18,9 @@ const FooterTwo = ({ style }: propsType) => {
                   <div className="col-xl-4 col-lg-5 col-md-6">
                      <div className="footer__widget">
                         <div className="footer__logo">
-                           <Link href="/"><h3 className="text-white">UnifiedMoving</h3></Link>
+                           <Link href="/">
+                           <Image src={logo} alt="Logo" width={100} />
+                           </Link>
                         </div>
                         <div className="footer__content footer__content-two">
                            <p>Ontario’s Trusted Logistics Experts — Unified in Motion, Delivering with Precision</p>

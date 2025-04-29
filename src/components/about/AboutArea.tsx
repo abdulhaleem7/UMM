@@ -41,8 +41,8 @@ const AboutArea = () => {
                         <span className="sub-title">About Unified Moving Master</span>
                         <h2 className="title">We Have Strong Reliable Logistic & Solutions Your Time!</h2>
                      </div>
-                     <p>At Unified Moving Master we don’t just move packages — we move businesses
-                     forward.</p>
+                     <p>At Unified Moving Master, we view moving as more than transporting belongings — its about embracing new beginnings. Built on a vision to elevate relocation services, we have earned a trusted reputation across Canada for delivering secure, seamless, and customer-focused moving experiences.</p>
+                     <p>Whether moving locally or across provinces, we provide personalized solutions backed by professionalism, innovation, and a commitment to excellence. At Unified Moving Master, we move more than just goods — we move lives forward with care, precision, and trust.</p>
                      <div className="about__content-inner-three">
                         <div className="about__list-box about__list-box-five">
                            <ul className="list-wrap">
