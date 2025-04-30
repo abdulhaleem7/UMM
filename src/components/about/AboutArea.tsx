@@ -1,21 +1,18 @@
-// import Image from 'next/image'
-// import about_img from "@/assets/img/images/h4_about_img2.jpg"
-// import about_shape from "@/assets/img/images/choose_logo.svg"
-// import Count from '../common/Count'
+import Image from 'next/image'
+import about_img from "@/assets/img/images/h4_about_img2.jpg"
+import about_img2 from "@/assets/img/images/h4_about_img4.jpg"
+import about_img3 from "@/assets/img/images/h4_about_img3.jpg"
 import Link from 'next/link'
-import "./about.css"
+// import "./about.css"
 const AboutArea = () => {
    return (
       <section className="about__area-two section-py-120">
          <div className="container">
-            {/* <div className="container py-4">
-               <div className="image-grid">
-                  <Image src={about_img} alt="Birds" />
-                  <Image src={about_img} alt="Bread" />
-                  <Image src={about_img} alt="People" />
-                  <Image src={about_img} alt="Flowers" />
-               </div>
-            </div> */}
+         <div className="container py-4 d-flex justify-content-center align-items-center flex-wrap gap-3">
+  <Image src={about_img} alt="Birds" className="img-fluid col-md-3 animate-img" />
+  <Image src={about_img2} alt="Bread" className="img-fluid col-md-4 animate-img" />
+  <Image src={about_img3} alt="People" className="img-fluid col-md-3 animate-img" />
+</div>
 
 
             {/* Content Section */}
