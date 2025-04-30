@@ -47,8 +47,8 @@ const FooterTwo = ({ style }: propsType) => {
                               <li><Link href="/">Moving and Hauling</Link></li>
                               <li><Link href="/">Courier & Local Delivery</Link></li>
                               <li><Link href="/">Freight Transport</Link></li>
-                              <li><Link href="/">E-commerce Fulfillment & Delivery</Link></li>
-                              <li><Link href="/">Custom Logistics</Link></li>
+                              {/* <li><Link href="/">E-commerce Fulfillment & Delivery</Link></li>
+                              <li><Link href="/">Custom Logistics</Link></li> */}
                            </ul>
                         </div>
                      </div>
@@ -61,8 +61,8 @@ const FooterTwo = ({ style }: propsType) => {
                               <li><Link href="/">How it’s Work</Link></li>
                               <li><Link href="/">Partners</Link></li>
                               <li><Link href="/">Testimonials</Link></li>
-                              <li><Link href="/">Case Studies</Link></li>
-                              <li><Link href="/">Pricing</Link></li>
+                              {/* <li><Link href="/">Case Studies</Link></li>
+                              <li><Link href="/">Pricing</Link></li> */}
                            </ul>
                         </div>
                      </div>
