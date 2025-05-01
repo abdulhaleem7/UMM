@@ -235,7 +235,7 @@ const RequestArea = ({ style }: PropsType) => {
        return true; // Indicate success
      } catch (error) {
        console.error("Failed to send email:", error);
-       toast.warning("Quote request saved, but confirmation email could not be sent");
+       toast.warning("Failed to send quote. Please try again later.");
        return false;
      }
    };
