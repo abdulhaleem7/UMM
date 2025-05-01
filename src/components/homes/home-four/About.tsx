@@ -2,8 +2,6 @@ import Image from "next/image"
 import Count from "@/components/common/Count"
 
 import about_img from "@/assets/img/images/h4_about_img2.jpg"
-import about_shape from "@/assets/img/images/choose_logo.svg"
-import shape from "@/assets/img/images/h4_about_shape.svg"
 
 const About = () => {
    return (
@@ -13,7 +11,7 @@ const About = () => {
                <div className="col-lg-6 col-md-9">
                   <div className="about__img-five">
                      <Image src={about_img} alt="img" data-aos="fade-left" data-aos-delay="200" />
-                     <Image src={about_shape} alt="shape" className="shape" />
+                     {/* <Image src={about_shape} alt="shape" className="shape" /> */}
                      <div className="about__clients-box about__clients-box-two" data-aos="fade-right" data-aos-delay="200">
                         <span className="title">Flexible, Improved & Accelerated Solutions!</span>
                         <div className="counter__item">
@@ -40,8 +38,8 @@ const About = () => {
                <div className="col-lg-6">
                   <div className="about__content-five">
                      <div className="section__title mb-20">
-                        <span className="sub-title">About Unified Moving Master</span>
-                        <h2 className="title">We Have Strong Reliable Logistic & Solutions Your Time!</h2>
+                        <span className="sub-title">About The Company</span>
+                        <h2 className="title">What We Stand For:</h2>
                      </div>
                      <p>At Unified Moving Master we don’t just move packages — we move businesses
                      forward.</p>
@@ -102,7 +100,7 @@ const About = () => {
             </div>
          </div>
          <div className="about__shape-two">
-            <Image src={shape} alt="shape" data-aos="fade-left" data-aos-delay="400" />
+            {/* <Image src={shape} alt="shape" data-aos="fade-left" data-aos-delay="400" /> */}
          </div>
       </section>
    )

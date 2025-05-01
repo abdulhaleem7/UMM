@@ -1,9 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
 
-// import logo from "@/assets/img/logo/w_logo.svg"
-import shape_1 from "@/assets/img/images/inner_footer_shape01.svg"
-import shape_2 from "@/assets/img/images/inner_footer_shape02.svg"
 import logo from "@/assets/img/logo/umm-logo.png"
 
 interface propsType {
@@ -11,7 +8,7 @@ interface propsType {
 }
 const FooterTwo = ({ style }: propsType) => {
    return (
-      <footer className={`footer__area-two fix ${style ? "footer__area-three" : ""}`}>
+      <footer className={`footer__area-two fix ${style ? "footer__area-three" : ""}`} style={{backgroundColor: "#605d5d"}}>
          <div className="container">
             <div className="footer__top">
                <div className="row">
@@ -19,7 +16,7 @@ const FooterTwo = ({ style }: propsType) => {
                      <div className="footer__widget">
                         <div className="footer__logo">
                            <Link href="/">
-                           <Image src={logo} alt="Logo" width={100} />
+                           <Image src={logo} alt="Logo" width={150} />
                            </Link>
                         </div>
                         <div className="footer__content footer__content-two">
@@ -59,7 +56,6 @@ const FooterTwo = ({ style }: propsType) => {
                         <div className="footer__link footer__link-two">
                            <ul className="list-wrap">
                               <li><Link href="/">How it’s Work</Link></li>
-                              <li><Link href="/">Partners</Link></li>
                               <li><Link href="/">Testimonials</Link></li>
                               {/* <li><Link href="/">Case Studies</Link></li>
                               <li><Link href="/">Pricing</Link></li> */}
@@ -92,8 +88,8 @@ const FooterTwo = ({ style }: propsType) => {
             </div>
          </div>
          <div className="footer__shape footer__shape-two">
-            <Image src={shape_1} alt="shape" data-aos="fade-down" data-aos-delay="400" />
-            <Image src={shape_2} alt="shape" data-aos="fade-left" data-aos-delay="400" />
+            {/* <Image src={shape_1} alt="shape" data-aos="fade-down" data-aos-delay="400" /> */}
+            {/* <Image src={shape_2} alt="shape" data-aos="fade-left" data-aos-delay="400" /> */}
          </div>
       </footer>
    )

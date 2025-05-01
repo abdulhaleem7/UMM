@@ -35,7 +35,6 @@ const OffCanvas = ({ offCanvas, setOffCanvas }: MobileSidebarProps) => {
             <div className="offCanvas__social-icon mt-30">
                <Link href="#"><i className="fab fa-facebook-f"></i></Link>
                <Link href="#"><i className="fab fa-twitter"></i></Link>
-               <Link href="#"><i className="fab fa-google-plus-g"></i></Link>
                <Link href="#"><i className="fab fa-instagram"></i></Link>
             </div>
          </div>

@@ -12,32 +12,32 @@ const ServiceSidebar = () => {
                <div className="services__cat-list">
                   <ul className="list-wrap">
                      <li>
-                        <Link href="/services-details">
+                        <Link href="/">
                            <span><i className="flaticon-ship"></i>Ocean Freight</span> <i className="flaticon-right-arrow"></i>
                         </Link>
                      </li>
                      <li>
-                        <Link href="/services-details">
+                        <Link href="/">
                            <span><i className="flaticon-air-freight"></i>Air Freight</span> <i className="flaticon-right-arrow"></i>
                         </Link>
                      </li>
                      <li>
-                        <Link href="/services-details">
+                        <Link href="/">
                            <span><i className="flaticon-train"></i>Rail Freight</span> <i className="flaticon-right-arrow"></i>
                         </Link>
                      </li>
                      <li>
-                        <Link href="/services-details">
+                        <Link href="/">
                            <span><i className="flaticon-truck"></i>Road Freight</span> <i className="flaticon-right-arrow"></i>
                         </Link>
                      </li>
                      <li>
-                        <Link href="/services-details">
+                        <Link href="/">
                            <span><i className="flaticon-warehouse-1"></i>Warehouse</span> <i className="flaticon-right-arrow"></i>
                         </Link>
                      </li>
                      <li>
-                        <Link href="/services-details">
+                        <Link href="/">
                            <span><i className="flaticon-delivery-cart"></i>Cargo Freight</span> <i className="flaticon-right-arrow"></i>
                         </Link>
                      </li>

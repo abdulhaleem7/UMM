@@ -108,7 +108,7 @@ const RequestArea = ({ style }: PropsType) => {
      const methods = [];
      if (requestData.contactPhone) methods.push("Phone Call");
      if (requestData.contactEmail) methods.push("Email");
-     if (requestData.contactText) methods.push("Text Message");
+     if (requestData.contactText) methods.push("Whatsapp");
      
      return methods.length > 0 ? methods.join(", ") : "None specified";
    };
@@ -116,35 +116,33 @@ const RequestArea = ({ style }: PropsType) => {
    const getRequestQuoteEmailBody = () => {
      return `
        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-         <h2 style="color: #d70006; text-align: center;">New Moving Quote Request</h2>
+         <h2 style="color: #fc5205; text-align: center;">New Moving Quote Request</h2>
          <p style="font-size: 16px; color: #555;">Hello, you have received a new quote request from your website.</p>
          
          <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-           <h3 style="color: #d70006; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Contact Information</h3>
-           <p><strong style="color: #d70006;">Full Name:</strong> ${requestData.fullName}</p>
-           <p><strong style="color: #d70006;">Email Address:</strong> ${requestData.email}</p>
-           <p><strong style="color: #d70006;">Phone Number:</strong> ${requestData.phone}</p>
+           <h3 style="color: #fc5205; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Contact Information</h3>
+           <p><strong style="color: #fc5205;">Full Name:</strong> ${requestData.fullName}</p>
+           <p><strong style="color: #fc5205;">Email Address:</strong> ${requestData.email}</p>
+           <p><strong style="color: #fc5205;">Phone Number:</strong> ${requestData.phone}</p>
          </div>
          
          <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-           <h3 style="color: #d70006; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Move Details</h3>
-           <p><strong style="color: #d70006;">Moving Date:</strong> ${requestData.moveDate}</p>
-           <p><strong style="color: #d70006;">Current Address:</strong> ${requestData.currentAddress}</p>
-           <p><strong style="color: #d70006;">New Address:</strong> ${requestData.newAddress}</p>
+           <h3 style="color: #fc5205; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Move Details</h3>
+           <p><strong style="color: #fc5205;">Moving Date:</strong> ${requestData.moveDate}</p>
+           <p><strong style="color: #fc5205;">Current Address:</strong> ${requestData.currentAddress}</p>
+           <p><strong style="color: #fc5205;">New Address:</strong> ${requestData.newAddress}</p>
            
-           <p><strong style="color: #d70006;">Move Type:</strong> ${getMoveTypes()}</p>
-           <p><strong style="color: #d70006;">Services Needed:</strong> ${getServicesNeeded()}</p>
+           <p><strong style="color: #fc5205;">Move Type:</strong> ${getMoveTypes()}</p>
+           <p><strong style="color: #fc5205;">Services Needed:</strong> ${getServicesNeeded()}</p>
          </div>
          
          <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
-           <h3 style="color: #d70006; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Additional Details</h3>
-           <p><strong style="color: #d70006;">Special Requests:</strong></p>
+           <h3 style="color: #fc5205; border-bottom: 1px solid #ddd; padding-bottom: 5px;">Additional Details</h3>
+           <p><strong style="color: #fc5205;">Special Requests:</strong></p>
            <p style="background-color: #fff; padding: 10px; border-radius: 3px;">${requestData.specialRequests}</p>
-           <p><strong style="color: #d70006;">Preferred Contact Method:</strong> ${getContactMethods()}</p>
+           <p><strong style="color: #fc5205;">Preferred Contact Method:</strong> ${getContactMethods()}</p>
          </div>
          
-         <p style="font-size: 12px; color: #777; text-align: center; margin-top: 20px;">This is an automated email sent from your Borderless Movers quote request form.</p>
-       </div>
      `;
    };
 
@@ -216,6 +214,7 @@ const RequestArea = ({ style }: PropsType) => {
        emailBdy: getRequestQuoteEmailBody(),
        senderEmail: requestData.email,
        subject: "New Moving Quote Request",
+       customerPhone: requestData.phone
      };
      
      try {
@@ -644,7 +643,7 @@ const RequestArea = ({ style }: PropsType) => {
                                                onChange={handleCheckboxChange}
                                              />
                                              <label className="form-check-label" htmlFor="contactText">
-                                                Text Message
+                                                Whatsapp
                                              </label>
                                           </div>
                                        </div>

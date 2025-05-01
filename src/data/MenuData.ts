@@ -58,7 +58,7 @@ const menu_data: MenuItem[] = [
    //          title: "Services",
    //          mega_menu: [
    //             { link: "/services", title: "Our Services" },
-   //             { link: "/services-details", title: "Services Details" },
+   //             { link: "/", title: "Services Details" },
    //          ]
    //       },
    //       {

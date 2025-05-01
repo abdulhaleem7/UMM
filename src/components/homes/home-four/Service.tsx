@@ -29,16 +29,16 @@ const Service = () => {
                   <div key={item.id} className="col-lg-4 col-md-6">
                      <div className="services__item-three">
                         <div className="services__thumb-three">
-                           <Link href="/services-details">
+                           <Link href="/">
                               <Image src={item.img ? item.img : ""} alt="img" />
                            </Link>
-                           {/* <Link href="/services-details" className="btn border-btn">Read More <InjectableSvg src="/assets/img/icon/right_arrow.svg" alt="" className="injectable" /></Link> */}
+                           {/* <Link href="/" className="btn border-btn">Read More <InjectableSvg src="/assets/img/icon/right_arrow.svg" alt="" className="injectable" /></Link> */}
                         </div>
                         <div className="services__content-three">
                            <div className="services__icon-three">
                               <i className={item.icon}></i>
                            </div>
-                           <h4 className="title"><Link href="/services-details">{item.title}</Link></h4>
+                           <h4 className="title"><Link href="/">{item.title}</Link></h4>
                            <p>{item.desc}</p>
                         </div>
                      </div>
