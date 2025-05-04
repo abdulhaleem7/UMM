@@ -8,7 +8,7 @@ interface propsType {
 }
 const FooterTwo = ({ style }: propsType) => {
    return (
-      <footer className={`footer__area-two fix ${style ? "footer__area-three" : ""}`} style={{backgroundColor: "#605d5d"}}>
+      <footer className={`footer__area-two fix ${style ? "footer__area-three" : ""}`}>
          <div className="container">
             <div className="footer__top">
                <div className="row">
@@ -24,11 +24,12 @@ const FooterTwo = ({ style }: propsType) => {
                         </div>
                         <div className="footer__social footer__social-two">
                            <ul className="list-wrap">
-                              <li><Link href="https://www.facebook.com/" target="_blank"><i className="fab fa-facebook-f"></i></Link></li>
+                              <li><Link href="https://www.facebook.com/share/18xBbghrF6/?mibextid=wwXIfr" target="_blank"><i className="fab fa-facebook-f"></i></Link></li>
                               <li><Link href="https://twitter.com" target="_blank"><i className="fab fa-twitter"></i></Link></li>
-                              <li><Link href="https://www.whatsapp.com/" target="_blank"><i className="fab fa-whatsapp"></i></Link></li>
-                              <li><Link href="https://www.instagram.com/" target="_blank"><i className="fab fa-instagram"></i></Link></li>
-                              {/* <li><Link href="https://www.youtube.com/" target="_blank"><i className="fab fa-youtube"></i></Link></li> */}
+                              <li><Link href="https://wa.me/13653563255" target="_blank"><i className="fab fa-whatsapp"></i></Link></li>
+                              <li><Link href="https://www.instagram.com/unifiedmoving_master?igsh=YjNtdGF0cWNncWF0&utm_source=qr" target="_blank"><i className="fab fa-instagram"></i></Link></li>
+                              <li><Link href="https://www.linkedin.com/" target="_blank"><i className="fab fa-linkedin"></i></Link></li>
+                              <li><Link href="https://www.tiktok.com/@unifiedmovingmaster?_t=ZM-8w0ScrIvJEU&_r=1" target="_blank"><i className="fab fa-tiktok"></i></Link></li>
                            </ul>
                         </div>
                         <div className="copyright-text copyright-text-two">
