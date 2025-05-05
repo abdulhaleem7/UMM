@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import logo from "@/assets/img/logo/umm-logo.png"
+import logo from "@/assets/img/logo/umm-logo2.png"
 
 interface propsType {
    style?: boolean;
@@ -16,7 +16,7 @@ const FooterTwo = ({ style }: propsType) => {
                      <div className="footer__widget">
                         <div className="footer__logo">
                            <Link href="/">
-                           <Image src={logo} alt="Logo" width={150} />
+                           <Image src={logo} alt="Logo" width={150} height={200} />
                            </Link>
                         </div>
                         <div className="footer__content footer__content-two">
