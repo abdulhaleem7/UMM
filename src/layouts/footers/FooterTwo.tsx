@@ -25,10 +25,10 @@ const FooterTwo = ({ style }: propsType) => {
                         <div className="footer__social footer__social-two">
                            <ul className="list-wrap">
                               <li><Link href="https://www.facebook.com/share/18xBbghrF6/?mibextid=wwXIfr" target="_blank"><i className="fab fa-facebook-f"></i></Link></li>
-                              <li><Link href="https://twitter.com" target="_blank"><i className="fab fa-twitter"></i></Link></li>
+                              <li><Link href="https://x.com/unifiedmovers?s=21" target="_blank"><i className="fab fa-x-twitter"></i></Link></li>
                               <li><Link href="https://wa.me/13653563255" target="_blank"><i className="fab fa-whatsapp"></i></Link></li>
                               <li><Link href="https://www.instagram.com/unifiedmoving_master?igsh=YjNtdGF0cWNncWF0&utm_source=qr" target="_blank"><i className="fab fa-instagram"></i></Link></li>
-                              <li><Link href="https://www.linkedin.com/" target="_blank"><i className="fab fa-linkedin"></i></Link></li>
+                              <li><Link href="https://www.linkedin.com/in/abdulahi-lawal-897837357?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank"><i className="fab fa-linkedin"></i></Link></li>
                               <li><Link href="https://www.tiktok.com/@unifiedmovingmaster?_t=ZM-8w0ScrIvJEU&_r=1" target="_blank"><i className="fab fa-tiktok"></i></Link></li>
                            </ul>
                         </div>
@@ -56,7 +56,7 @@ const FooterTwo = ({ style }: propsType) => {
                         <h4 className="footer__widget-title footer__widget-title-two">Quick Links</h4>
                         <div className="footer__link footer__link-two">
                            <ul className="list-wrap">
-                              <li><Link href="/">How it’s Work</Link></li>
+                              <li><Link href="/">How it Works</Link></li>
                               <li><Link href="/">Testimonials</Link></li>
                               {/* <li><Link href="/">Case Studies</Link></li>
                               <li><Link href="/">Pricing</Link></li> */}

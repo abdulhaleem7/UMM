@@ -34,8 +34,8 @@ const OffCanvas = ({ offCanvas, setOffCanvas }: MobileSidebarProps) => {
             </div>
             <div className="offCanvas__social-icon mt-30">
                <Link href="https://www.facebook.com/share/18xBbghrF6/?mibextid=wwXIfr"><i className="fab fa-facebook-f"></i></Link>
-               <Link href="#"><i className="fab fa-twitter"></i></Link>
-               <Link href="#"><i className="fab fa-linkedin"></i></Link>
+               <Link href="https://x.com/unifiedmovers?s=21"><i className="fab fa-x-twitter"></i></Link>
+               <Link href="https://www.linkedin.com/in/abdulahi-lawal-897837357?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app"><i className="fab fa-linkedin"></i></Link>
                <Link href="https://wa.me/13653563255"><i className="fab fa-whatsapp"></i></Link>
                <Link href="https://www.tiktok.com/@unifiedmovingmaster?_t=ZM-8w0ScrIvJEU&_r=1"><i className="fab fa-tiktok"></i></Link>
                <Link href="https://www.instagram.com/unifiedmoving_master?igsh=YjNtdGF0cWNncWF0&utm_source=qr"><i className="fab fa-instagram"></i></Link>
