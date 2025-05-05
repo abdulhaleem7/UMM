@@ -54,9 +54,9 @@ const Hero = () => {
                                  <Link href="/contact" className="btn">Contact Us <InjectableSvg src="/assets/img/icon/right_arrow.svg" alt="" className="injectable" /></Link>
                                  <Link href="/services" className="btn border-btn">Our Dedicated Services <InjectableSvg src="/assets/img/icon/right_arrow.svg" alt="" className="injectable" /></Link>
                               </div>
-                              <div className='mt-3'>
+                              {/* <div className='mt-3'>
                                  <Link href="https://wa.me/13653563255" className="btn border-btn bg-success">Whatsapp<i className="fab fa-whatsapp"></i></Link>
-                              </div>
+                              </div> */}
                               
                            </div>
                         </div>
