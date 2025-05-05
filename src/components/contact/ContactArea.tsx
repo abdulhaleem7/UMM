@@ -245,7 +245,7 @@ const ContactArea = () => {
           <div className="col-lg-4 col-sm-6">
             <div className="contact__info-item">
               <h4 className="title">Office in Ontario</h4>
-              <p className="info-one">Hamilton, <br/> Ontario</p>
+              <p className="info-one">11 Robert street, <br/> Hamilton Ontario. CA</p>
               <h4 className="title"><Link href="tel:+1(365-356-3255)">+1(365-356-3255)</Link></h4>
               <p className="info-two">Monday – Saturday: 8:00-18:00 <br/> </p>
               <Link href="mailto:admin@unifiedmovingmaster.ca">admin@unifiedmovingmaster.ca</Link>

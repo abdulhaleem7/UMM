@@ -71,7 +71,7 @@ const FooterTwo = ({ style }: propsType) => {
                            <ul className="list-wrap">
                               <li>
                                  <i className="flaticon-location-1"></i>
-                                 <p>Hamilton Ontario</p>
+                                 <p>11 Robert street,Hamilton Ontario. CA</p>
                               </li>
                               <li>
                                  <i className="flaticon-telephone"></i>
