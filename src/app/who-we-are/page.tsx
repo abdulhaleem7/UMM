@@ -2,7 +2,7 @@ import WhoWeAre from "@/components/pages/who-we-are";
 import Wrapper from "@/layouts/Wrapper";
 
 export const metadata = {
-   title: "Who-we-are umm - Transport & Logistics React Next js Template",
+   title: "Who-we-are umm - Transport & Logistics ",
 };
 const page = () => {
    return (
