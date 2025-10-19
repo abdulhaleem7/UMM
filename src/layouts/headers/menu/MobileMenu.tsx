@@ -19,7 +19,7 @@ const MobileMenu = () => {
    };
 
    //openMobileMenu
-   const openMobileMenu = (menu: any) => {
+   const openMobileMenu = (menu: string) => {
       if (navTitle === menu) {
          setNavTitle("");
       } else {
@@ -28,7 +28,7 @@ const MobileMenu = () => {
    };
 
    //openMobileSubMenu
-   const openMobileSubMenu = (sub_m: any) => {
+   const openMobileSubMenu = (sub_m: string) => {
       if (subNavTitle === sub_m) {
          setSubNavTitle("");
       } else {
