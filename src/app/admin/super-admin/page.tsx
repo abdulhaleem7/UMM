@@ -93,7 +93,7 @@ export default function SuperAdminPage() {
       
       if (clientsResponse.ok) {
         const clientsData = await clientsResponse.json();
-        const totalPatronage = clientsData.clients.reduce((sum: number, client: any) => sum + client.patronageCount, 0);
+        const totalPatronage = clientsData.clients.reduce((sum: number, client: { patronageCount: number }) => sum + client.patronageCount, 0);
         
         setSystemStats(prev => ({
           ...prev,

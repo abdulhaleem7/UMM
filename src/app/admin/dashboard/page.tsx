@@ -74,7 +74,7 @@ export default function AdminDashboard() {
         localStorage.removeItem('adminToken');
         router.push('/admin/login');
       }
-    } catch (error) {
+    } catch {
       localStorage.removeItem('adminToken');
       router.push('/admin/login');
     }

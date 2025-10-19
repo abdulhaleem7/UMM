@@ -245,16 +245,17 @@ export async function POST(request: NextRequest) {
 
     const transporter = createTransporter();
     let sentCount = 0;
-    let errors = [];
+    const errors: string[] = [];
 
     // Test the connection first
     try {
       await transporter.verify();
-    } catch (connectionError: any) {
+    } catch (connectionError: unknown) {
+      const errorMessage = connectionError instanceof Error ? connectionError.message : 'Unknown connection error';
       return NextResponse.json({
         success: false,
         message: 'Failed to connect to email server. Please check your email credentials.',
-        error: connectionError.message,
+        error: errorMessage,
         instructions: [
           'Verify your Zoho email credentials in .env.local',
           'Make sure you are using an app password, not your regular password',
@@ -278,9 +279,10 @@ export async function POST(request: NextRequest) {
 
         sentCount++;
         console.log(`✅ Email sent successfully to ${client.email}`);
-      } catch (emailError: any) {
+      } catch (emailError: unknown) {
         console.error(`❌ Failed to send email to ${client.email}:`, emailError);
-        errors.push(`${client.name} (${client.email}): ${emailError.message}`);
+        const errorMessage = emailError instanceof Error ? emailError.message : 'Unknown error';
+        errors.push(`${client.name} (${client.email}): ${errorMessage}`);
       }
     }
 
@@ -292,12 +294,13 @@ export async function POST(request: NextRequest) {
       errors: errors.length > 0 ? errors : undefined
     });
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Monthly email campaign error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
       { 
         message: 'Failed to send monthly emails',
-        error: error.message,
+        error: errorMessage,
         troubleshooting: [
           'Check your email credentials in .env.local',
           'Make sure you are using Zoho app password',

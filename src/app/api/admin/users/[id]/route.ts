@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 import Database from '@/lib/database';
 
 // Helper function to verify JWT and get user info
@@ -55,7 +55,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     }
 
     // Build update object
-    const updates: any = {};
+    const updates: Record<string, string | boolean> = {};
     if (username !== undefined) updates.username = username;
     if (email !== undefined) updates.email = email;
     if (role !== undefined) updates.role = role;
@@ -68,7 +68,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     }
 
     const updatedUser = await db.getAdminUserById(userId);
-    const { password_hash, ...safeUser } = updatedUser!;
+    const { password_hash: _password_hash, ...safeUser } = updatedUser!;
 
     return NextResponse.json({ 
       message: 'Admin user updated successfully',

@@ -94,8 +94,8 @@ export async function POST(request: NextRequest) {
         client,
         message: 'Client added successfully'
       });
-    } catch (error: any) {
-      if (error.message.includes('UNIQUE constraint failed')) {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
         return NextResponse.json(
           { message: 'A client with this email already exists' },
           { status: 400 }

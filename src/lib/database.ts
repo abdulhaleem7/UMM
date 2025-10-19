@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import * as bcrypt from 'bcryptjs';
 
 export interface Client {
   id?: number;
@@ -246,7 +247,7 @@ class ClientDatabase {
     
     // Build WHERE clause based on search and filter
     let whereClause = '';
-    const params: any[] = [];
+    const params: (string | number)[] = [];
     
     if (search) {
       whereClause = 'WHERE (name LIKE ? OR email LIKE ? OR phone LIKE ?)';
@@ -305,7 +306,7 @@ class ClientDatabase {
   }
 
   // Admin method to execute raw SQL queries (use with caution)
-  executeQuery(query: string, params?: any[]): any {
+  executeQuery(query: string, params?: (string | number)[]): unknown {
     const stmt = this.db.prepare(query);
     if (params) {
       return stmt.all(...params);
@@ -319,7 +320,6 @@ class ClientDatabase {
     
     if (existingAdmins.count === 0) {
       console.log('Creating default super admin user');
-      const bcrypt = require('bcryptjs');
       const defaultPassword = 'admin123'; // Default password
       const hashedPassword = bcrypt.hashSync(defaultPassword, 12);
       

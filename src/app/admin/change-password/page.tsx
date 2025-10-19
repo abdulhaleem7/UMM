@@ -121,7 +121,7 @@ export default function ChangePasswordPage() {
       } else {
         setErrors([data.error || 'Failed to change password']);
       }
-    } catch (error) {
+    } catch {
       setErrors(['An error occurred while changing password']);
     } finally {
       setLoading(false);
@@ -273,7 +273,7 @@ export default function ChangePasswordPage() {
               <li>Use a strong, unique password</li>
               <li>Include a mix of uppercase, lowercase, numbers, and symbols</li>
               <li>Avoid using personal information</li>
-              <li>Don't reuse passwords from other accounts</li>
+              <li>Don&apos;t reuse passwords from other accounts</li>
               <li>Change your password regularly</li>
             </ul>
           </div>

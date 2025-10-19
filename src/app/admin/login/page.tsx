@@ -34,7 +34,7 @@ export default function AdminLogin() {
       } else {
         toast.error(data.message || 'Invalid username or password');
       }
-    } catch (error) {
+    } catch {
       toast.error('Login failed. Please check your connection and try again.');
     } finally {
       setIsLoading(false);

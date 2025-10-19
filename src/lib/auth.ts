@@ -27,7 +27,7 @@ export function verifyToken(token: string): User | null {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { username: string };
     return { username: decoded.username };
-  } catch (error) {
+  } catch {
     return null;
   }
 }

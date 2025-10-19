@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import Database, { AdminUser } from '@/lib/database';
+import Database from '@/lib/database';
 
 // Helper function to verify JWT and get user info
 async function verifyAdminToken(request: NextRequest) {
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Remove password hash from response
-    const { password_hash, ...safeUser } = newAdminUser;
+    const { password_hash: _password_hash, ...safeUser } = newAdminUser;
 
     return NextResponse.json({ 
       message: 'Admin user created successfully',
