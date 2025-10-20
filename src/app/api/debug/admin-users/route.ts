@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
-import Database from '@/lib/database';
+import { NextResponse } from 'next/server';
+import { getDatabase } from '@/lib/database';
 
 export async function GET() {
   try {
     console.log('DEBUG: Starting admin users debug endpoint');
     
-    const db = new Database();
+    const db = getDatabase();
     
     // Test the getAllAdminUsers method
     const adminUsers = db.getAllAdminUsers();

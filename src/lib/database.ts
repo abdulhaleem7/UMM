@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import * as bcrypt from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface Client {
   id?: number;
@@ -21,7 +22,7 @@ export interface PatronageRecord {
 }
 
 export interface AdminUser {
-  id?: number;
+  id?: number | string; // Support both number (legacy) and string (UUID)
   username: string;
   email: string;
   password_hash: string;
@@ -36,26 +37,22 @@ class ClientDatabase {
   private db: Database.Database;
 
   constructor() {
-    // For Vercel deployment, use in-memory database if file system is read-only
+    // Always use file-based database for persistence
     let dbPath;
     
-    if (process.env.VERCEL) {
-      // In Vercel, use in-memory database
-      dbPath = ':memory:';
-      console.log('Using in-memory SQLite database for Vercel deployment');
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      // For Vercel/production, use a persistent database path
+      // Vercel has /tmp directory available for temporary files
+      dbPath = process.env.DATABASE_PATH || '/tmp/clients.db';
+      console.log('Using persistent SQLite database for production:', dbPath);
     } else {
-      // Local development or other platforms with persistent storage
+      // Local development
       dbPath = path.join(process.cwd(), 'clients.db');
       console.log('Using file-based SQLite database:', dbPath);
     }
     
     this.db = new Database(dbPath);
     this.initTables();
-    
-    // For in-memory database, seed with some initial data if needed
-    if (process.env.VERCEL) {
-      this.seedInitialData();
-    }
   }
 
   private initTables() {
@@ -87,7 +84,7 @@ class ClientDatabase {
     // Create admin users table
     this.db.exec(`
       CREATE TABLE IF NOT EXISTS admin_users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id TEXT PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
@@ -322,14 +319,16 @@ class ClientDatabase {
       console.log('Creating default super admin user');
       const defaultPassword = 'admin123'; // Default password
       const hashedPassword = bcrypt.hashSync(defaultPassword, 12);
+      const adminId = uuidv4(); // Generate UUID for default admin
       
       const now = new Date().toISOString();
       const stmt = this.db.prepare(`
-        INSERT INTO admin_users (username, email, password_hash, role, created_at, updated_at, is_active)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO admin_users (id, username, email, password_hash, role, created_at, updated_at, is_active)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `);
       
       stmt.run(
+        adminId,
         'superadmin',
         'admin@unifiedmovingmaster.ca',
         hashedPassword,
@@ -339,7 +338,7 @@ class ClientDatabase {
         1
       );
       
-      console.log('Default super admin created: username: superadmin, password: admin123');
+      console.log('Default super admin created with UUID:', adminId, 'username: superadmin, password: admin123');
     }
   }
 
@@ -360,7 +359,7 @@ class ClientDatabase {
     }
   }
 
-  getAdminUserById(id: number): AdminUser | null {
+  getAdminUserById(id: number | string): AdminUser | null {
     const stmt = this.db.prepare(`
       SELECT id, username, email, role, created_at, updated_at, last_login, is_active 
       FROM admin_users 
@@ -369,7 +368,7 @@ class ClientDatabase {
     return stmt.get(id) as AdminUser | null;
   }
 
-  getAdminUserWithPassword(id: number): AdminUser | null {
+  getAdminUserWithPassword(id: number | string): AdminUser | null {
     const stmt = this.db.prepare(`
       SELECT * FROM admin_users WHERE id = ? AND is_active = 1
     `);
@@ -395,12 +394,15 @@ class ClientDatabase {
       console.log('Database.createAdminUser() - Creating user:', { username: adminData.username, email: adminData.email, role: adminData.role });
       
       const now = new Date().toISOString();
+      const userId = uuidv4(); // Generate UUID for the new user
+      
       const stmt = this.db.prepare(`
-        INSERT INTO admin_users (username, email, password_hash, role, created_at, updated_at, is_active)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO admin_users (id, username, email, password_hash, role, created_at, updated_at, is_active)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `);
       
-      const result = stmt.run(
+      stmt.run(
+        userId,
         adminData.username,
         adminData.email,
         adminData.password_hash,
@@ -412,7 +414,7 @@ class ClientDatabase {
 
       const newUser = {
         ...adminData,
-        id: result.lastInsertRowid as number,
+        id: userId,
         created_at: now,
         updated_at: now
       };
@@ -425,7 +427,7 @@ class ClientDatabase {
     }
   }
 
-  updateAdminUser(id: number, updates: Partial<AdminUser>): boolean {
+  updateAdminUser(id: number | string, updates: Partial<AdminUser>): boolean {
     const now = new Date().toISOString();
     const updateData = { ...updates, updated_at: now };
     
@@ -438,7 +440,7 @@ class ClientDatabase {
     return result.changes > 0;
   }
 
-  deleteAdminUser(id: number): boolean {
+  deleteAdminUser(id: number | string): boolean {
     // Prevent deletion of the last super admin
     const superAdminCount = this.db.prepare('SELECT COUNT(*) as count FROM admin_users WHERE role = ? AND is_active = 1').get('super_admin') as { count: number };
     const userToDelete = this.getAdminUserById(id);
@@ -452,14 +454,14 @@ class ClientDatabase {
     return result.changes > 0;
   }
 
-  updateLastLogin(userId: number): boolean {
+  updateLastLogin(userId: number | string): boolean {
     const now = new Date().toISOString();
     const stmt = this.db.prepare('UPDATE admin_users SET last_login = ? WHERE id = ?');
     const result = stmt.run(now, userId);
     return result.changes > 0;
   }
 
-  changePassword(userId: number, newPasswordHash: string): boolean {
+  changePassword(userId: number | string, newPasswordHash: string): boolean {
     const now = new Date().toISOString();
     const stmt = this.db.prepare('UPDATE admin_users SET password_hash = ?, updated_at = ? WHERE id = ?');
     const result = stmt.run(newPasswordHash, now, userId);

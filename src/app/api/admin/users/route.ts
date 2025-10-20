@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import Database from '@/lib/database';
+import { getDatabase } from '@/lib/database';
 
 // Helper function to verify JWT and get user info
 async function verifyAdminToken(request: NextRequest) {
@@ -14,7 +14,7 @@ async function verifyAdminToken(request: NextRequest) {
   
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-    const db = new Database();
+    const db = getDatabase();
     const adminUser = await db.getAdminUserById(decoded.adminId);
     return adminUser;
   } catch (error) {
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Access denied. Super admin required.' }, { status: 403 });
     }
 
-    const db = new Database();
+    const db = getDatabase();
     const adminUsers = await db.getAllAdminUsers();
     console.log('Raw admin users from database:', adminUsers?.length || 0, 'users');
     
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid role. Must be "admin" or "super_admin"' }, { status: 400 });
     }
 
-    const db = new Database();
+    const db = getDatabase();
 
     // Check if username or email already exists
     const existingUser = await db.getAdminUserByUsername(username) || await db.getAdminUserByEmail(email);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import Database from '@/lib/database';
+import { getDatabase } from '@/lib/database';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const db = new Database();
+    const db = getDatabase();
     
     // Get admin user by username
     const adminUser = await db.getAdminUserByUsername(username);

@@ -16,6 +16,7 @@
     "@types/better-sqlite3": "^7.6.13",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^6.4.20",
+    "@types/uuid": "^10.0.0",
     "aos": "^2.3.4",
     "bcryptjs": "^3.0.2",
     "better-sqlite3": "^12.4.1",
@@ -37,6 +38,7 @@
     "react-toastify": "^10.0.6",
     "sass": "^1.81.0",
     "swiper": "^11.1.15",
+    "uuid": "^13.0.0",
     "vivus": "^0.4.6",
     "xlsx": "^0.18.5",
     "yup": "^1.4.0"

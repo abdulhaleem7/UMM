@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import Database from '@/lib/database';
+import { getDatabase } from '@/lib/database';
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-    const db = new Database();
+    const db = getDatabase();
     
     // Get current user info from database
     const adminUser = await db.getAdminUserById(decoded.adminId);

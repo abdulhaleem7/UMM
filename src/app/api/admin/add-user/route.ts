@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Database from '@/lib/database';
+import { getDatabase } from '@/lib/database';
 
 async function verifyAdminToken(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
@@ -13,7 +13,7 @@ async function verifyAdminToken(request: NextRequest) {
   
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
-    const db = new Database();
+    const db = getDatabase();
     const adminUser = await db.getAdminUserById(decoded.adminId);
     return adminUser;
   } catch (error) {
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid role. Must be "admin" or "super_admin"' }, { status: 400 });
     }
 
-    const db = new Database();
+    const db = getDatabase();
 
     // Check if username or email already exists
     const existingUserByUsername = await db.getAdminUserByUsername(username);
