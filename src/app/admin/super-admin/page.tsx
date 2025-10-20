@@ -114,19 +114,29 @@ export default function SuperAdminPage() {
   const fetchAdminUsers = async () => {
     try {
       const token = localStorage.getItem('adminToken');
+      console.log('Fetching admin users with token:', token ? 'present' : 'missing');
+      
       const response = await fetch('/api/admin/users', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
 
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
-        setAdminUsers(data.adminUsers);
+        console.log('Admin users response data:', data);
+        console.log('Admin users count:', data.adminUsers?.length || 0);
+        
+        setAdminUsers(data.adminUsers || []);
         setSystemStats(prev => ({
           ...prev,
-          totalAdmins: data.adminUsers.length
+          totalAdmins: data.adminUsers?.length || 0
         }));
+      } else {
+        const errorData = await response.text();
+        console.error('Failed to fetch admin users - Response not OK:', response.status, errorData);
       }
     } catch (error) {
       console.error('Failed to fetch admin users:', error);
@@ -304,31 +314,39 @@ export default function SuperAdminPage() {
               </tr>
             </thead>
             <tbody>
-              {adminUsers.map((user) => (
-                <tr key={user.id}>
-                  <td>
-                    <div className="admin-info">
-                      <div className="admin-name">
-                        {user.username}
-                        {user.id === currentUser.id && <span className="badge-info">(You)</span>}
-                      </div>
-                      <div className="admin-email">{user.email}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className={`role-badge ${user.role === 'super_admin' ? 'super-admin' : 'admin'}`}>
-                      {user.role === 'super_admin' ? '🔱 Super Admin' : '👤 Admin'}
-                    </span>
-                  </td>
-                  <td>{formatDate(user.created_at)}</td>
-                  <td>{user.last_login ? formatDate(user.last_login) : 'Never'}</td>
-                  <td>
-                    <span className="activity-status">
-                      {getActivityStatus(user)}
-                    </span>
+              {adminUsers.length === 0 ? (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
+                    No admin users found. Check console for debugging information.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                adminUsers.map((user) => (
+                  <tr key={user.id}>
+                    <td>
+                      <div className="admin-info">
+                        <div className="admin-name">
+                          {user.username}
+                          {user.id === currentUser.id && <span className="badge-info">(You)</span>}
+                        </div>
+                        <div className="admin-email">{user.email}</div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`role-badge ${user.role === 'super_admin' ? 'super-admin' : 'admin'}`}>
+                        {user.role === 'super_admin' ? '🔱 Super Admin' : '👤 Admin'}
+                      </span>
+                    </td>
+                    <td>{formatDate(user.created_at)}</td>
+                    <td>{user.last_login ? formatDate(user.last_login) : 'Never'}</td>
+                    <td>
+                      <span className="activity-status">
+                        {getActivityStatus(user)}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

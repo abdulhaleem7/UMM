@@ -25,14 +25,18 @@ async function verifyAdminToken(request: NextRequest) {
 // GET /api/admin/users - Get all admin users (Super Admin only)
 export async function GET(request: NextRequest) {
   try {
+    console.log('GET /api/admin/users - Starting request');
     const currentUser = await verifyAdminToken(request);
+    console.log('Current user:', currentUser ? { id: currentUser.id, username: currentUser.username, role: currentUser.role } : 'null');
     
     if (!currentUser || currentUser.role !== 'super_admin') {
+      console.log('Access denied - not super admin');
       return NextResponse.json({ error: 'Access denied. Super admin required.' }, { status: 403 });
     }
 
     const db = new Database();
     const adminUsers = await db.getAllAdminUsers();
+    console.log('Raw admin users from database:', adminUsers?.length || 0, 'users');
     
     // Remove password hashes from response
     const safeAdminUsers = adminUsers.map(user => ({
@@ -46,6 +50,7 @@ export async function GET(request: NextRequest) {
       is_active: user.is_active
     }));
 
+    console.log('Returning safe admin users:', safeAdminUsers?.length || 0, 'users');
     return NextResponse.json({ adminUsers: safeAdminUsers });
   } catch (error) {
     console.error('Get admin users error:', error);
@@ -93,6 +98,8 @@ export async function POST(request: NextRequest) {
       role: role || 'admin',
       is_active: true
     });
+
+    console.log('Created new admin user:', { id: newAdminUser.id, username: newAdminUser.username, email: newAdminUser.email, role: newAdminUser.role });
 
     // Remove password hash from response
     const { password_hash: _password_hash, ...safeUser } = newAdminUser;
