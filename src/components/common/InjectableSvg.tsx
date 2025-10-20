@@ -49,6 +49,7 @@ const InjectableSvg: React.FC<InjectableSvgProps> = ({ src, alt = '', className 
       fetchAndInjectSvg();
    }, [src]);
 
+   // eslint-disable-next-line @next/next/no-img-element
    return <img ref={imgRef} src={src} alt={alt} className={`injectable ${className}`} />;
 };
 

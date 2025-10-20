@@ -28,7 +28,7 @@ const Count = ({ number }: CountType) => {
             <span ref={countUpRef} />
             <InView
               as="span"
-              onChange={(inView: any) => {
+              onChange={(inView: boolean) => {
                 if (inView && !focus) {
                   setFocus(true);
                 }
