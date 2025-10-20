@@ -345,12 +345,19 @@ class ClientDatabase {
 
   // Admin User Management Methods
   getAllAdminUsers(): AdminUser[] {
-    const stmt = this.db.prepare(`
-      SELECT id, username, email, role, created_at, updated_at, last_login, is_active 
-      FROM admin_users 
-      ORDER BY created_at ASC
-    `);
-    return stmt.all() as AdminUser[];
+    try {
+      const stmt = this.db.prepare(`
+        SELECT id, username, email, role, created_at, updated_at, last_login, is_active 
+        FROM admin_users 
+        ORDER BY created_at ASC
+      `);
+      const results = stmt.all() as AdminUser[];
+      console.log(`Database.getAllAdminUsers() - Found ${results.length} admin users`);
+      return results;
+    } catch (error) {
+      console.error('Database.getAllAdminUsers() - Error:', error);
+      throw error;
+    }
   }
 
   getAdminUserById(id: number): AdminUser | null {
@@ -384,28 +391,38 @@ class ClientDatabase {
   }
 
   createAdminUser(adminData: Omit<AdminUser, 'id' | 'created_at' | 'updated_at'>): AdminUser {
-    const now = new Date().toISOString();
-    const stmt = this.db.prepare(`
-      INSERT INTO admin_users (username, email, password_hash, role, created_at, updated_at, is_active)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `);
-    
-    const result = stmt.run(
-      adminData.username,
-      adminData.email,
-      adminData.password_hash,
-      adminData.role,
-      now,
-      now,
-      adminData.is_active ? 1 : 0
-    );
+    try {
+      console.log('Database.createAdminUser() - Creating user:', { username: adminData.username, email: adminData.email, role: adminData.role });
+      
+      const now = new Date().toISOString();
+      const stmt = this.db.prepare(`
+        INSERT INTO admin_users (username, email, password_hash, role, created_at, updated_at, is_active)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `);
+      
+      const result = stmt.run(
+        adminData.username,
+        adminData.email,
+        adminData.password_hash,
+        adminData.role,
+        now,
+        now,
+        adminData.is_active ? 1 : 0
+      );
 
-    return {
-      ...adminData,
-      id: result.lastInsertRowid as number,
-      created_at: now,
-      updated_at: now
-    };
+      const newUser = {
+        ...adminData,
+        id: result.lastInsertRowid as number,
+        created_at: now,
+        updated_at: now
+      };
+
+      console.log('Database.createAdminUser() - User created successfully with ID:', newUser.id);
+      return newUser;
+    } catch (error) {
+      console.error('Database.createAdminUser() - Error:', error);
+      throw error;
+    }
   }
 
   updateAdminUser(id: number, updates: Partial<AdminUser>): boolean {
