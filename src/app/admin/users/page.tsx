@@ -114,9 +114,9 @@ export default function AdminUsersPage() {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      console.log('[/admin/users] Creating admin user:', { username: formData.username, email: formData.email, role: formData.role });
+      console.log('[/admin/users] Creating admin user via /api/admin/add-user:', { username: formData.username, email: formData.email, role: formData.role });
       
-      const response = await fetch('/api/admin/users', {
+      const response = await fetch('/api/admin/add-user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
