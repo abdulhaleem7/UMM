@@ -233,7 +233,7 @@ export async function POST(request: NextRequest) {
     }
 
     const db = getDatabase();
-    const clients = db.getClientsForEmailCampaign();
+    const clients = await db.getClientsForEmailCampaign();
 
     if (clients.length === 0) {
       return NextResponse.json({

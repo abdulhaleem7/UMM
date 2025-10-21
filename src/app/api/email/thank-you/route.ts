@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
 
     // Get client details
     const db = getDatabase();
-    const client = db.getClientById(clientId);
+    const client = await db.getClientById(clientId);
 
     if (!client) {
       return NextResponse.json(

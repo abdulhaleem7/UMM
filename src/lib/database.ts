@@ -1,5 +1,4 @@
-import Database from 'better-sqlite3';
-import path from 'path';
+import { createClient } from '@libsql/client';
 import * as bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -34,30 +33,25 @@ export interface AdminUser {
 }
 
 class ClientDatabase {
-  private db: Database.Database;
+  private db: any; // Turso client
 
   constructor() {
-    // Always use file-based database for persistence
-    let dbPath;
-    
-    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
-      // For Vercel/production, use a persistent database path
-      // Vercel has /tmp directory available for temporary files
-      dbPath = process.env.DATABASE_PATH || '/tmp/clients.db';
-      console.log('Using persistent SQLite database for production:', dbPath);
-    } else {
-      // Local development
-      dbPath = path.join(process.cwd(), 'clients.db');
-      console.log('Using file-based SQLite database:', dbPath);
+    // Always use Turso cloud database
+    if (!process.env.TURSO_DATABASE_URL || !process.env.TURSO_AUTH_TOKEN) {
+      throw new Error('TURSO_DATABASE_URL and TURSO_AUTH_TOKEN environment variables are required');
     }
     
-    this.db = new Database(dbPath);
-    this.initTables();
+    this.db = createClient({
+      url: process.env.TURSO_DATABASE_URL!,
+      authToken: process.env.TURSO_AUTH_TOKEN!,
+    });
+    
+    // Initialize tables
+    this.initTables().catch(console.error);
   }
 
-  private initTables() {
-    // Create clients table
-    this.db.exec(`
+  private async initTables() {
+    const createClientsTable = `
       CREATE TABLE IF NOT EXISTS clients (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
@@ -68,10 +62,9 @@ class ClientDatabase {
         lastPatronageDate TEXT,
         notes TEXT
       )
-    `);
+    `;
 
-    // Create patronage records table
-    this.db.exec(`
+    const createPatronageTable = `
       CREATE TABLE IF NOT EXISTS patronage_records (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         clientId INTEGER NOT NULL,
@@ -79,10 +72,9 @@ class ClientDatabase {
         notes TEXT,
         FOREIGN KEY (clientId) REFERENCES clients (id) ON DELETE CASCADE
       )
-    `);
+    `;
 
-    // Create admin users table
-    this.db.exec(`
+    const createAdminUsersTable = `
       CREATE TABLE IF NOT EXISTS admin_users (
         id TEXT PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
@@ -94,152 +86,194 @@ class ClientDatabase {
         last_login TEXT,
         is_active BOOLEAN DEFAULT 1
       )
-    `);
+    `;
 
-    // Seed default super admin if no admin users exist
-    this.seedDefaultSuperAdmin();
+    // Create tables using cloud database
+    await this.db.execute(createClientsTable);
+    await this.db.execute(createPatronageTable);
+    await this.db.execute(createAdminUsersTable);
+    await this.seedDefaultSuperAdmin();
   }
 
-  private seedInitialData() {
-    // Check if we already have data
-    const existingClients = this.db.prepare('SELECT COUNT(*) as count FROM clients').get() as { count: number };
-    
-    if (existingClients.count === 0) {
-      console.log('Seeding initial data for in-memory database');
+  private async seedInitialData() {
+    try {
+      // Check if we already have data
+      const result = await this.db.execute('SELECT COUNT(*) as count FROM clients');
+      const existingClients = { count: result.rows[0]?.count || 0 };
       
-      // Add some sample data for demonstration
-      const sampleClient: Omit<Client, 'id'> = {
-        name: 'Sample Client',
-        email: 'sample@example.com',
-        phone: '+1234567890',
-        patronageCount: 0,
-        dateAdded: new Date().toISOString(),
-        notes: 'This is sample data for Vercel deployment'
-      };
+      if (existingClients.count === 0) {
+        // Add some sample data for demonstration
+        const sampleClient: Omit<Client, 'id'> = {
+          name: 'Sample Client',
+          email: 'sample@example.com',
+          phone: '+1234567890',
+          patronageCount: 0,
+          dateAdded: new Date().toISOString(),
+          notes: 'This is sample data for Vercel deployment'
+        };
 
-      this.addClient(sampleClient);
+        await this.addClient(sampleClient);
+      }
+    } catch (error) {
+      console.error('Error seeding initial data:', error);
     }
   }
 
   // Client CRUD operations
-  addClient(client: Omit<Client, 'id'>): Client {
-    const stmt = this.db.prepare(`
-      INSERT INTO clients (name, email, phone, patronageCount, dateAdded, lastPatronageDate, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `);
-    
-    const result = stmt.run(
-      client.name,
-      client.email,
-      client.phone || null,
-      client.patronageCount,
-      client.dateAdded,
-      client.lastPatronageDate || null,
-      client.notes || null
-    );
-
-    return { ...client, id: result.lastInsertRowid as number };
+  async addClient(client: Omit<Client, 'id'>): Promise<Client> {
+    try {
+      const result = await this.db.execute({
+        sql: `INSERT INTO clients (name, email, phone, patronageCount, dateAdded, lastPatronageDate, notes)
+              VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        args: [
+          client.name,
+          client.email,
+          client.phone || null,
+          client.patronageCount,
+          client.dateAdded,
+          client.lastPatronageDate || null,
+          client.notes || null
+        ]
+      });
+      
+      // For Turso cloud database, get the inserted record by email since it's unique
+      const getResult = await this.db.execute({
+        sql: 'SELECT * FROM clients WHERE email = ? ORDER BY ROWID DESC LIMIT 1',
+        args: [client.email]
+      });
+      
+      if (getResult.rows && getResult.rows.length > 0) {
+        return getResult.rows[0] as Client;
+      } else {
+        // Fallback: return with a temporary ID
+        return { ...client, id: Date.now() };
+      }
+    } catch (error) {
+      console.error('Error adding client to cloud DB:', error);
+      throw error;
+    }
   }
 
-  getAllClients(): Client[] {
-    const stmt = this.db.prepare('SELECT * FROM clients ORDER BY dateAdded DESC');
-    return stmt.all() as Client[];
+  async getAllClients(): Promise<Client[]> {
+    const result = await this.db.execute('SELECT * FROM clients ORDER BY dateAdded DESC');
+    return result.rows as Client[];
   }
 
-  getClientById(id: number): Client | null {
-    const stmt = this.db.prepare('SELECT * FROM clients WHERE id = ?');
-    return stmt.get(id) as Client | null;
+  async getClientById(id: number): Promise<Client | null> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM clients WHERE id = ?',
+      args: [id]
+    });
+    return result.rows.length > 0 ? result.rows[0] as Client : null;
   }
 
-  getClientByEmail(email: string): Client | null {
-    const stmt = this.db.prepare('SELECT * FROM clients WHERE email = ?');
-    return stmt.get(email) as Client | null;
+  async getClientByEmail(email: string): Promise<Client | null> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM clients WHERE email = ?',
+      args: [email]
+    });
+    return result.rows.length > 0 ? result.rows[0] as Client : null;
   }
 
-  updateClient(id: number, updates: Partial<Client>): boolean {
+  async updateClient(id: number, updates: Partial<Client>): Promise<boolean> {
     const fields = Object.keys(updates).map(key => `${key} = ?`).join(', ');
     const values = Object.values(updates);
     
-    const stmt = this.db.prepare(`UPDATE clients SET ${fields} WHERE id = ?`);
-    const result = stmt.run(...values, id);
+    const result = await this.db.execute({
+      sql: `UPDATE clients SET ${fields} WHERE id = ?`,
+      args: [...values, id]
+    });
     
-    return result.changes > 0;
+    return result.rowsAffected > 0;
   }
 
-  deleteClient(id: number): boolean {
-    const stmt = this.db.prepare('DELETE FROM clients WHERE id = ?');
-    const result = stmt.run(id);
-    return result.changes > 0;
+  async deleteClient(id: number): Promise<boolean> {
+    const result = await this.db.execute({
+      sql: 'DELETE FROM clients WHERE id = ?',
+      args: [id]
+    });
+    return result.rowsAffected > 0;
   }
 
   // Patronage operations
-  addPatronageRecord(clientId: number, date: string, notes?: string): PatronageRecord {
+  async addPatronageRecord(clientId: number, date: string, notes?: string): Promise<PatronageRecord> {
     // Add patronage record
-    const stmt = this.db.prepare(`
-      INSERT INTO patronage_records (clientId, date, notes)
-      VALUES (?, ?, ?)
-    `);
-    
-    const result = stmt.run(clientId, date, notes || null);
+    const result = await this.db.execute({
+      sql: `INSERT INTO patronage_records (clientId, date, notes)
+            VALUES (?, ?, ?)`,
+      args: [clientId, date, notes || null]
+    });
 
     // Update client's patronage count and last patronage date
-    const updateStmt = this.db.prepare(`
-      UPDATE clients 
-      SET patronageCount = patronageCount + 1, lastPatronageDate = ?
-      WHERE id = ?
-    `);
-    updateStmt.run(date, clientId);
+    await this.db.execute({
+      sql: `UPDATE clients 
+            SET patronageCount = patronageCount + 1, lastPatronageDate = ?
+            WHERE id = ?`,
+      args: [date, clientId]
+    });
 
     return {
-      id: result.lastInsertRowid as number,
+      id: Number(result.lastInsertRowid),
       clientId,
       date,
       notes
     };
   }
 
-  getPatronageRecords(clientId: number): PatronageRecord[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM patronage_records 
-      WHERE clientId = ? 
-      ORDER BY date DESC
-    `);
-    return stmt.all(clientId) as PatronageRecord[];
+  async getPatronageRecords(clientId: number): Promise<PatronageRecord[]> {
+    const result = await this.db.execute({
+      sql: `SELECT * FROM patronage_records 
+            WHERE clientId = ? 
+            ORDER BY date DESC`,
+      args: [clientId]
+    });
+    return result.rows as PatronageRecord[];
   }
 
   // Get clients for email campaigns
-  getClientsForEmailCampaign(): Client[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM clients 
-      WHERE email IS NOT NULL AND email != ''
-      ORDER BY name
-    `);
-    return stmt.all() as Client[];
+  async getClientsForEmailCampaign(): Promise<Client[]> {
+    const result = await this.db.execute({
+      sql: `SELECT * FROM clients 
+            WHERE email IS NOT NULL AND email != ''
+            ORDER BY name`,
+      args: []
+    });
+    return result.rows as Client[];
   }
 
   // Admin method to get all patronage records
-  getAllPatronageRecords(): PatronageRecord[] {
-    const stmt = this.db.prepare(`
-      SELECT * FROM patronage_records 
-      ORDER BY date DESC
-    `);
-    return stmt.all() as PatronageRecord[];
+  async getAllPatronageRecords(): Promise<PatronageRecord[]> {
+    const result = await this.db.execute({
+      sql: `SELECT * FROM patronage_records 
+            ORDER BY date DESC`,
+      args: []
+    });
+    return result.rows as PatronageRecord[];
   }
 
   // Get database stats for admin
-  getDatabaseStats() {
-    const clientCount = this.db.prepare('SELECT COUNT(*) as count FROM clients').get() as { count: number };
-    const patronageCount = this.db.prepare('SELECT COUNT(*) as count FROM patronage_records').get() as { count: number };
+  async getDatabaseStats() {
+    const clientCountResult = await this.db.execute({
+      sql: 'SELECT COUNT(*) as count FROM clients',
+      args: []
+    });
+    const patronageCountResult = await this.db.execute({
+      sql: 'SELECT COUNT(*) as count FROM patronage_records',
+      args: []
+    });
+    
+    const clientCount = clientCountResult.rows[0] as { count: number };
+    const patronageCount = patronageCountResult.rows[0] as { count: number };
     
     return {
       totalClients: clientCount.count,
       totalPatronageRecords: patronageCount.count,
-      databaseFile: 'clients.db'
+      databaseFile: 'Turso Cloud Database'
     };
   }
 
   // Get paginated clients with search and filter
-  getPaginatedClients(page: number = 1, limit: number = 10, search: string = '', filter: string = 'all') {
+  async getPaginatedClients(page: number = 1, limit: number = 10, search: string = '', filter: string = 'all') {
     const offset = (page - 1) * limit;
     
     // Build WHERE clause based on search and filter
@@ -276,7 +310,11 @@ class ClientDatabase {
     
     // Get total count
     const countQuery = `SELECT COUNT(*) as count FROM clients ${whereClause}`;
-    const totalCount = (this.db.prepare(countQuery).get(params) as { count: number }).count;
+    const countResult = await this.db.execute({
+      sql: countQuery,
+      args: params
+    });
+    const totalCount = countResult.rows[0]?.count || 0;
     
     // Get paginated results
     const dataQuery = `
@@ -285,7 +323,12 @@ class ClientDatabase {
       ORDER BY dateAdded DESC 
       LIMIT ? OFFSET ?
     `;
-    const clients = this.db.prepare(dataQuery).all([...params, limit, offset]) as Client[];
+    
+    const result = await this.db.execute({
+      sql: dataQuery,
+      args: [...params, limit, offset]
+    });
+    const clients = result.rows as Client[];
     
     const totalPages = Math.ceil(totalCount / limit);
     
@@ -303,55 +346,69 @@ class ClientDatabase {
   }
 
   // Admin method to execute raw SQL queries (use with caution)
-  executeQuery(query: string, params?: (string | number)[]): unknown {
-    const stmt = this.db.prepare(query);
-    if (params) {
-      return stmt.all(...params);
+  async executeQuery(query: string, params?: (string | number)[]): Promise<unknown> {
+    const result = await this.db.execute({
+      sql: query,
+      args: params || []
+    });
+    return result.rows;
+  }
+
+  // Ensure admin exists (for Vercel temporary storage)
+  private async ensureAdminExists() {
+    const result = await this.db.execute('SELECT COUNT(*) as count FROM admin_users');
+    const existingAdmins = { count: result.rows[0]?.count || 0 };
+    
+    if (existingAdmins.count === 0) {
+      await this.seedDefaultSuperAdmin();
     }
-    return stmt.all();
   }
 
   // Seed default super admin
-  private seedDefaultSuperAdmin() {
-    const existingAdmins = this.db.prepare('SELECT COUNT(*) as count FROM admin_users').get() as { count: number };
-    
-    if (existingAdmins.count === 0) {
-      console.log('Creating default super admin user');
-      const defaultPassword = 'admin123'; // Default password
-      const hashedPassword = bcrypt.hashSync(defaultPassword, 12);
-      const adminId = uuidv4(); // Generate UUID for default admin
+  private async seedDefaultSuperAdmin() {
+    try {
+      const result = await this.db.execute('SELECT COUNT(*) as count FROM admin_users');
+      const existingAdmins = { count: result.rows[0]?.count || 0 };
       
-      const now = new Date().toISOString();
-      const stmt = this.db.prepare(`
-        INSERT INTO admin_users (id, username, email, password_hash, role, created_at, updated_at, is_active)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-      
-      stmt.run(
-        adminId,
-        'superadmin',
-        'admin@unifiedmovingmaster.ca',
-        hashedPassword,
-        'super_admin',
-        now,
-        now,
-        1
-      );
-      
-      console.log('Default super admin created with UUID:', adminId, 'username: superadmin, password: admin123');
+      if (existingAdmins.count === 0) {
+        const defaultPassword = 'admin123'; // Default password
+        const hashedPassword = bcrypt.hashSync(defaultPassword, 12);
+        const adminId = uuidv4(); // Generate UUID for default admin
+        
+        const now = new Date().toISOString();
+        
+        await this.db.execute({
+          sql: `INSERT INTO admin_users (id, username, email, password_hash, role, created_at, updated_at, is_active)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+          args: [adminId, 'superadmin', 'admin@unifiedmovingmaster.ca', hashedPassword, 'super_admin', now, now, 1]
+        });
+      }
+    } catch (error) {
+      console.error('Error seeding default super admin:', error);
     }
   }
 
   // Admin User Management Methods
-  getAllAdminUsers(): AdminUser[] {
+  async getAllAdminUsers(): Promise<AdminUser[]> {
     try {
-      const stmt = this.db.prepare(`
+      const result = await this.db.execute(`
         SELECT id, username, email, role, created_at, updated_at, last_login, is_active 
         FROM admin_users 
         ORDER BY created_at ASC
       `);
-      const results = stmt.all() as AdminUser[];
-      console.log(`Database.getAllAdminUsers() - Found ${results.length} admin users`);
+      
+      const results = result.rows.map((row: any) => ({
+        id: row.id,
+        username: row.username,
+        email: row.email,
+        role: row.role,
+        created_at: row.created_at,
+        updated_at: row.updated_at,
+        last_login: row.last_login,
+        is_active: !!row.is_active,
+        password_hash: '' // Don't return password hash
+      }));
+      
       return results;
     } catch (error) {
       console.error('Database.getAllAdminUsers() - Error:', error);
@@ -359,58 +416,83 @@ class ClientDatabase {
     }
   }
 
-  getAdminUserById(id: number | string): AdminUser | null {
-    const stmt = this.db.prepare(`
-      SELECT id, username, email, role, created_at, updated_at, last_login, is_active 
-      FROM admin_users 
-      WHERE id = ?
-    `);
-    return stmt.get(id) as AdminUser | null;
+  async getAdminUserById(id: number | string): Promise<AdminUser | null> {
+    const result = await this.db.execute({
+      sql: `SELECT id, username, email, role, created_at, updated_at, last_login, is_active 
+            FROM admin_users 
+            WHERE id = ?`,
+      args: [id]
+    });
+    
+    return result.rows[0] ? {
+      id: result.rows[0].id,
+      username: result.rows[0].username,
+      email: result.rows[0].email,
+      role: result.rows[0].role,
+      created_at: result.rows[0].created_at,
+      updated_at: result.rows[0].updated_at,
+      last_login: result.rows[0].last_login,
+      is_active: !!result.rows[0].is_active,
+      password_hash: '' // Don't return password hash
+    } : null;
   }
 
-  getAdminUserWithPassword(id: number | string): AdminUser | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM admin_users WHERE id = ? AND is_active = 1
-    `);
-    return stmt.get(id) as AdminUser | null;
+  async getAdminUserWithPassword(id: number | string): Promise<AdminUser | null> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM admin_users WHERE id = ? AND is_active = 1',
+      args: [id]
+    });
+    return result.rows.length > 0 ? result.rows[0] as AdminUser : null;
   }
 
-  getAdminUserByUsername(username: string): AdminUser | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM admin_users WHERE username = ? AND is_active = 1
-    `);
-    return stmt.get(username) as AdminUser | null;
+  async getAdminUserByUsername(username: string): Promise<AdminUser | null> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM admin_users WHERE username = ? AND is_active = 1',
+      args: [username]
+    });
+    
+    return result.rows[0] ? {
+      id: result.rows[0].id,
+      username: result.rows[0].username,
+      email: result.rows[0].email,
+      password_hash: result.rows[0].password_hash,
+      role: result.rows[0].role,
+      created_at: result.rows[0].created_at,
+      updated_at: result.rows[0].updated_at,
+      last_login: result.rows[0].last_login,
+      is_active: !!result.rows[0].is_active
+    } : null;
   }
 
-  getAdminUserByEmail(email: string): AdminUser | null {
-    const stmt = this.db.prepare(`
-      SELECT * FROM admin_users WHERE email = ? AND is_active = 1
-    `);
-    return stmt.get(email) as AdminUser | null;
+  async getAdminUserByEmail(email: string): Promise<AdminUser | null> {
+    const result = await this.db.execute({
+      sql: 'SELECT * FROM admin_users WHERE email = ? AND is_active = 1',
+      args: [email]
+    });
+    
+    return result.rows[0] ? {
+      id: result.rows[0].id,
+      username: result.rows[0].username,
+      email: result.rows[0].email,
+      password_hash: result.rows[0].password_hash,
+      role: result.rows[0].role,
+      created_at: result.rows[0].created_at,
+      updated_at: result.rows[0].updated_at,
+      last_login: result.rows[0].last_login,
+      is_active: !!result.rows[0].is_active
+    } : null;
   }
 
-  createAdminUser(adminData: Omit<AdminUser, 'id' | 'created_at' | 'updated_at'>): AdminUser {
+  async createAdminUser(adminData: Omit<AdminUser, 'id' | 'created_at' | 'updated_at'>): Promise<AdminUser> {
     try {
-      console.log('Database.createAdminUser() - Creating user:', { username: adminData.username, email: adminData.email, role: adminData.role });
-      
       const now = new Date().toISOString();
       const userId = uuidv4(); // Generate UUID for the new user
       
-      const stmt = this.db.prepare(`
-        INSERT INTO admin_users (id, username, email, password_hash, role, created_at, updated_at, is_active)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-      
-      stmt.run(
-        userId,
-        adminData.username,
-        adminData.email,
-        adminData.password_hash,
-        adminData.role,
-        now,
-        now,
-        adminData.is_active ? 1 : 0
-      );
+      await this.db.execute({
+        sql: `INSERT INTO admin_users (id, username, email, password_hash, role, created_at, updated_at, is_active)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        args: [userId, adminData.username, adminData.email, adminData.password_hash, adminData.role, now, now, adminData.is_active ? 1 : 0]
+      });
 
       const newUser = {
         ...adminData,
@@ -419,7 +501,6 @@ class ClientDatabase {
         updated_at: now
       };
 
-      console.log('Database.createAdminUser() - User created successfully with ID:', newUser.id);
       return newUser;
     } catch (error) {
       console.error('Database.createAdminUser() - Error:', error);
@@ -427,45 +508,61 @@ class ClientDatabase {
     }
   }
 
-  updateAdminUser(id: number | string, updates: Partial<AdminUser>): boolean {
+  async updateAdminUser(id: number | string, updates: Partial<AdminUser>): Promise<boolean> {
     const now = new Date().toISOString();
     const updateData = { ...updates, updated_at: now };
     
     const fields = Object.keys(updateData).map(key => `${key} = ?`).join(', ');
     const values = Object.values(updateData);
     
-    const stmt = this.db.prepare(`UPDATE admin_users SET ${fields} WHERE id = ?`);
-    const result = stmt.run(...values, id);
-    
-    return result.changes > 0;
+    const result = await this.db.execute({
+      sql: `UPDATE admin_users SET ${fields} WHERE id = ?`,
+      args: [...values, id]
+    });
+    return result.rowsAffected > 0;
   }
 
-  deleteAdminUser(id: number | string): boolean {
+  async deleteAdminUser(id: number | string): Promise<boolean> {
     // Prevent deletion of the last super admin
-    const superAdminCount = this.db.prepare('SELECT COUNT(*) as count FROM admin_users WHERE role = ? AND is_active = 1').get('super_admin') as { count: number };
-    const userToDelete = this.getAdminUserById(id);
+    const userToDelete = await this.getAdminUserById(id);
     
-    if (userToDelete?.role === 'super_admin' && superAdminCount.count <= 1) {
-      throw new Error('Cannot delete the last super admin');
+    if (userToDelete?.role === 'super_admin') {
+      const result = await this.db.execute({
+        sql: 'SELECT COUNT(*) as count FROM admin_users WHERE role = ? AND is_active = 1',
+        args: ['super_admin']
+      });
+      const superAdminCount = { count: result.rows[0]?.count || 0 };
+      
+      if (superAdminCount.count <= 1) {
+        throw new Error('Cannot delete the last super admin');
+      }
     }
     
-    const stmt = this.db.prepare('DELETE FROM admin_users WHERE id = ?');
-    const result = stmt.run(id);
-    return result.changes > 0;
+    const result = await this.db.execute({
+      sql: 'DELETE FROM admin_users WHERE id = ?',
+      args: [id]
+    });
+    return result.rowsAffected > 0;
   }
 
-  updateLastLogin(userId: number | string): boolean {
+  async updateLastLogin(userId: number | string): Promise<boolean> {
     const now = new Date().toISOString();
-    const stmt = this.db.prepare('UPDATE admin_users SET last_login = ? WHERE id = ?');
-    const result = stmt.run(now, userId);
-    return result.changes > 0;
+    
+    const result = await this.db.execute({
+      sql: 'UPDATE admin_users SET last_login = ? WHERE id = ?',
+      args: [now, userId]
+    });
+    return result.rowsAffected > 0;
   }
 
-  changePassword(userId: number | string, newPasswordHash: string): boolean {
+  async changePassword(userId: number | string, newPasswordHash: string): Promise<boolean> {
     const now = new Date().toISOString();
-    const stmt = this.db.prepare('UPDATE admin_users SET password_hash = ?, updated_at = ? WHERE id = ?');
-    const result = stmt.run(newPasswordHash, now, userId);
-    return result.changes > 0;
+    
+    const result = await this.db.execute({
+      sql: 'UPDATE admin_users SET password_hash = ?, updated_at = ? WHERE id = ?',
+      args: [newPasswordHash, now, userId]
+    });
+    return result.rowsAffected > 0;
   }
 
   close() {

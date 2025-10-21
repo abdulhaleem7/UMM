@@ -8,11 +8,11 @@ export async function GET() {
     const db = getDatabase();
     
     // Test the getAllAdminUsers method
-    const adminUsers = db.getAllAdminUsers();
+    const adminUsers = await db.getAllAdminUsers();
     console.log('DEBUG: Admin users from getAllAdminUsers method:', adminUsers?.length || 0, 'users');
     
     // Also try to check if database exists and is accessible
-    const testUser = db.getAdminUserById(1);
+    const testUser = await db.getAdminUserById(1);
     console.log('DEBUG: Test user by ID 1:', testUser ? 'found' : 'not found');
     
     return NextResponse.json({

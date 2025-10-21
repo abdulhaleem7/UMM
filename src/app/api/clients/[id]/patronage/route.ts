@@ -50,7 +50,7 @@ export async function POST(request: NextRequest, { params }: Params) {
     const db = getDatabase();
     
     // Check if client exists
-    const client = db.getClientById(clientId);
+    const client = await db.getClientById(clientId);
     if (!client) {
       return NextResponse.json(
         { message: 'Client not found' },
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest, { params }: Params) {
       );
     }
 
-    const patronageRecord = db.addPatronageRecord(clientId, date, notes);
+    const patronageRecord = await db.addPatronageRecord(clientId, date, notes);
 
     return NextResponse.json({
       success: true,
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest, { params }: Params) {
     const db = getDatabase();
     
     // Check if client exists
-    const client = db.getClientById(clientId);
+    const client = await db.getClientById(clientId);
     if (!client) {
       return NextResponse.json(
         { message: 'Client not found' },
@@ -99,7 +99,7 @@ export async function GET(request: NextRequest, { params }: Params) {
       );
     }
 
-    const patronageRecords = db.getPatronageRecords(clientId);
+    const patronageRecords = await db.getPatronageRecords(clientId);
 
     return NextResponse.json({
       success: true,

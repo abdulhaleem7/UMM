@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
     const db = getDatabase();
     
     // Get paginated clients with search and filter
-    const result = db.getPaginatedClients(page, limit, search, filter);
+    const result = await db.getPaginatedClients(page, limit, search, filter);
 
     return NextResponse.json({
       success: true,
@@ -88,20 +88,29 @@ export async function POST(request: NextRequest) {
     };
 
     try {
-      const client = db.addClient(newClient);
+      console.log('Adding client with data:', newClient);
+      const client = await db.addClient(newClient);
+      console.log('Client added successfully:', client);
+      
       return NextResponse.json({
         success: true,
         client,
         message: 'Client added successfully'
       });
     } catch (error: unknown) {
+      console.error('Add client error:', error);
       if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
         return NextResponse.json(
           { message: 'A client with this email already exists' },
           { status: 400 }
         );
       }
-      throw error;
+      
+      return NextResponse.json({
+        success: false,
+        error: 'Failed to add client',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      }, { status: 500 });
     }
 
   } catch (error) {

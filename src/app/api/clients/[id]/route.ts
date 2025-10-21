@@ -49,7 +49,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
     const db = getDatabase();
     
     // Check if client exists
-    const existingClient = db.getClientById(clientId);
+    const existingClient = await db.getClientById(clientId);
     if (!existingClient) {
       return NextResponse.json(
         { message: 'Client not found' },
@@ -59,7 +59,8 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
     // Validate email uniqueness if email is being updated
     if (updates.email && updates.email !== existingClient.email) {
-      const emailExists = db.getAllClients().some(client => 
+      const allClients = await db.getAllClients();
+      const emailExists = allClients.some(client => 
         client.email === updates.email && client.id !== clientId
       );
       
@@ -72,10 +73,10 @@ export async function PUT(request: NextRequest, { params }: Params) {
     }
 
     // Update client
-    const success = db.updateClient(clientId, updates);
+    const success = await db.updateClient(clientId, updates);
 
     if (success) {
-      const updatedClient = db.getClientById(clientId);
+      const updatedClient = await db.getClientById(clientId);
       return NextResponse.json({
         success: true,
         client: updatedClient,
@@ -121,7 +122,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     const db = getDatabase();
     
     // Check if client exists
-    const existingClient = db.getClientById(clientId);
+    const existingClient = await db.getClientById(clientId);
     if (!existingClient) {
       return NextResponse.json(
         { message: 'Client not found' },
@@ -130,7 +131,7 @@ export async function DELETE(request: NextRequest, { params }: Params) {
     }
 
     // Delete client
-    const success = db.deleteClient(clientId);
+    const success = await db.deleteClient(clientId);
 
     if (success) {
       return NextResponse.json({
